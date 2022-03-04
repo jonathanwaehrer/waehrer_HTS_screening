@@ -8,9 +8,12 @@ import os
 
 
 def main():
-    inp = "/Users/jonathanwahrer/Desktop/Msc/3_Semester/Drug_Design_Praktikum/waehrer_HTS_screening/data/proteins/"
-    lepr = "/Users/jonathanwahrer/Desktop/Msc/3_Semester/Drug_Design_Praktikum/waehrer_HTS_screening/bin/"
-    preparation.run(inp, lepr)
+    print("# ================== RMSD COMPARISON OF DOCKING TOOLS ================= #")
+    # preparing ligands
+    print("# ---- Receptor- and Ligand-preparation for Vina, Smina and LeDock ---- #")
+    proteins = "/Users/jonathanwahrer/Desktop/Msc/3_Semester/Drug_Design_Praktikum/waehrer_HTS_screening/data/proteins/"
+    bin = "/Users/jonathanwahrer/Desktop/Msc/3_Semester/Drug_Design_Praktikum/waehrer_HTS_screening/bin/"
+    preparation.run(input_proteins=proteins, path_to_bin=bin)
 
 
 if __name__ == "__main__":
