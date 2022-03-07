@@ -83,6 +83,7 @@ def prepare_ligands_for_vina(bin_dir: str):
             os.chdir("../../")
 
 
+# ==================================================================================================================== #
 def run(input_proteins, path_to_bin, operating_system="mac"):
     prepare_proteins(pdb_dir=input_proteins, bin_dir=path_to_bin, system=operating_system)
     prepare_ligands_for_vina(bin_dir=path_to_bin)
