@@ -1,0 +1,59 @@
+REMARK  7 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: CAK_9  and  CAL_10 
+REMARK    2  A    between atoms: CAN_12  and  CAS_16 
+REMARK       I    between atoms: CAS_16  and  NAU_24 
+REMARK    3  A    between atoms: CAV_17  and  CAW_18 
+REMARK    4  A    between atoms: CAV_17  and  NAU_24 
+REMARK    5  A    between atoms: CAW_18  and  NAX_26 
+REMARK    6  A    between atoms: CAY_19  and  NAX_26 
+REMARK    7  A    between atoms: CAZ_20  and  NAX_26 
+ROOT
+ATOM      1  CAL   J A   1      14.878   3.373  10.935  0.00  0.00     0.021 A 
+ATOM      2  CAM   J A   1      14.776   4.415  11.875  0.00  0.00    -0.021 A 
+ATOM      3  CAN   J A   1      16.064   4.813  12.205  0.00  0.00     0.061 A 
+ATOM      4  CAO   J A   1      16.908   3.993  11.462  0.00  0.00     0.021 A 
+ATOM      5  CAQ   J A   1      13.474   5.009  12.430  0.00  0.00     0.051 C 
+ATOM      6  CAR   J A   1      18.436   3.975  11.452  0.00  0.00     0.069 C 
+ATOM      7  NAP   J A   1      16.186   3.160  10.717  0.00  0.00    -0.362 N 
+ATOM      8  HAP   J A   1      16.565   2.471  10.083  0.00  0.00     0.165 HD
+ENDROOT
+BRANCH   1   9
+ATOM      9  CAK   J A   1      13.763   2.729  10.382  0.00  0.00     0.103 C 
+ATOM     10  CAG   J A   1      13.775   1.618   9.495  0.00  0.00     0.030 A 
+ATOM     11  CAE   J A   1      12.619   0.898   9.143  0.00  0.00     0.006 A 
+ATOM     12  CAI   J A   1      14.811   1.015   8.762  0.00  0.00     0.275 A 
+ATOM     13  CAD   J A   1      11.290   1.009   9.523  0.00  0.00     0.038 A 
+ATOM     14  CAF   J A   1      13.006  -0.102   8.232  0.00  0.00     0.071 A 
+ATOM     15  CAA   J A   1      10.347   0.125   8.996  0.00  0.00     0.035 A 
+ATOM     16  CAB   J A   1      10.722  -0.879   8.085  0.00  0.00     0.026 A 
+ATOM     17 CL     J A   1       8.705   0.271   9.506  0.00  0.00    -0.084 Cl
+ATOM     18  CAC   J A   1      12.061  -0.994   7.709  0.00  0.00     0.034 A 
+ATOM     19  NAH   J A   1      14.331   0.013   8.038  0.00  0.00    -0.209 NA
+ATOM     20  OAJ   J A   1      16.014   1.306   8.753  0.00  0.00    -0.266 OA
+ENDBRANCH   1   9
+BRANCH   3  21
+ATOM     21  CAS   J A   1      16.529   5.902  13.240  0.00  0.00     0.254 C 
+ATOM     22  NAU   J A   1      15.611   6.743  13.723  0.00  0.00    -0.355 N 
+ATOM     23  HAU   J A   1      14.663   6.661  13.384  0.00  0.00     0.162 HD
+ATOM     24  OAT   J A   1      17.695   5.915  13.620  0.00  0.00    -0.268 OA
+BRANCH  22  25
+ATOM     25  CAV   J A   1      15.908   7.793  14.733  0.00  0.00     0.150 C 
+BRANCH  25  26
+ATOM     26  CAW   J A   1      15.357   7.279  16.088  0.00  0.00     0.254 C 
+BRANCH  26  27
+ATOM     27  NAX   J A   1      14.850   8.327  17.020  0.00  0.00    -0.070 N 
+ATOM     28  HAX   J A   1      14.976   7.938  17.944  0.00  0.00     0.279 HD
+BRANCH  27  29
+ATOM     29  CAY   J A   1      13.402   8.590  16.830  0.00  0.00     0.230 C 
+ATOM     30  CBB   J A   1      13.089   9.190  15.448  0.00  0.00     0.034 C 
+ENDBRANCH  27  29
+BRANCH  27  31
+ATOM     31  CAZ   J A   1      15.639   9.585  17.003  0.00  0.00     0.230 C 
+ATOM     32  CBA   J A   1      15.677  10.189  18.417  0.00  0.00     0.034 C 
+ENDBRANCH  27  31
+ENDBRANCH  26  27
+ENDBRANCH  25  26
+ENDBRANCH  22  25
+ENDBRANCH   3  21
+TORSDOF 7

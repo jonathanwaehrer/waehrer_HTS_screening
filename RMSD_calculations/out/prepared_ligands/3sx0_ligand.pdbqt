@@ -1,0 +1,72 @@
+REMARK  11 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: N_1  and  CA_5 
+REMARK    2  A    between atoms: CA_5  and  C_6 
+REMARK    3  A    between atoms: CA_5  and  CB_8 
+REMARK    4  A    between atoms: CB_8  and  CG_9 
+REMARK    5  A    between atoms: CG_9  and  SD_10 
+REMARK    6  A    between atoms: SD_10  and  C5'_11 
+REMARK    7  A    between atoms: C5'_11  and  C4'_12 
+REMARK    8  A    between atoms: C3'_14  and  O3'_15 
+REMARK    9  A    between atoms: C2'_17  and  O2'_18 
+REMARK   10  A    between atoms: C1'_20  and  N9_33 
+REMARK   11  A    between atoms: C6_27  and  N6_28 
+ROOT
+ATOM      1  C4'  SX A   1      21.815  63.420  -8.077  0.00  0.00     0.165 C 
+ATOM      2  O4'  SX A   1      20.369  63.232  -8.223  0.00  0.00    -0.355 OA
+ATOM      3  C3'  SX A   1      22.385  63.556  -9.505  0.00  0.00     0.180 C 
+ATOM      4  C2'  SX A   1      21.121  63.377 -10.388  0.00  0.00     0.198 C 
+ATOM      5  C1'  SX A   1      20.221  62.546  -9.472  0.00  0.00     0.257 C 
+ENDROOT
+BRANCH   5   6
+ATOM      6  N9   SX A   1      18.778  62.590  -9.864  0.00  0.00    -0.331 N 
+ATOM      7  C4   SX A   1      17.994  61.514  -9.940  0.00  0.00     0.144 A 
+ATOM      8  N3   SX A   1      18.247  60.219  -9.744  0.00  0.00    -0.223 NA
+ATOM      9  C5   SX A   1      16.719  61.905 -10.304  0.00  0.00     0.070 A 
+ATOM     10  C2   SX A   1      17.271  59.329  -9.888  0.00  0.00     0.237 A 
+ATOM     11  N1   SX A   1      16.028  59.659 -10.238  0.00  0.00    -0.224 NA
+ATOM     12  C6   SX A   1      15.712  60.938 -10.463  0.00  0.00     0.137 A 
+ATOM     13  C7   SX A   1      16.815  63.277 -10.425  0.00  0.00     0.024 A 
+ATOM     14  C8   SX A   1      18.066  63.678 -10.152  0.00  0.00     0.174 A 
+ATOM     15 BR    SX A   1      15.391  64.480 -10.875  0.00  0.00    -0.053 Br
+BRANCH  12  16
+ATOM     16  N6   SX A   1      14.461  61.235 -10.816  0.00  0.00    -0.383 N 
+ATOM     17  H61  SX A   1      14.198  62.196 -10.983  0.00  0.00     0.157 HD
+ATOM     18  H62  SX A   1      13.776  60.499 -10.916  0.00  0.00     0.157 HD
+ENDBRANCH  12  16
+ENDBRANCH   5   6
+BRANCH   4  19
+ATOM     19  O2'  SX A   1      21.401  62.526 -11.450  0.00  0.00    -0.388 OA
+ATOM     20  H2'  SX A   1      21.740  61.706 -11.083  0.00  0.00     0.210 HD
+ENDBRANCH   4  19
+BRANCH   1  21
+ATOM     21  C5'  SX A   1      21.918  64.668  -7.233  0.00  0.00     0.108 C 
+BRANCH  21  22
+ATOM     22  SD   SX A   1      23.647  65.027  -6.759  0.00  0.00    -0.166 SA
+BRANCH  22  23
+ATOM     23  CG   SX A   1      23.788  64.211  -5.105  0.00  0.00     0.076 C 
+BRANCH  23  24
+ATOM     24  CB   SX A   1      24.638  62.941  -5.117  0.00  0.00     0.054 C 
+BRANCH  24  25
+ATOM     25  CA   SX A   1      24.719  62.273  -3.725  0.00  0.00     0.284 C 
+BRANCH  25  26
+ATOM     26  N    SX A   1      23.359  61.910  -3.229  0.00  0.00    -0.065 N 
+ATOM     27  H1   SX A   1      22.799  62.746  -3.140  0.00  0.00     0.275 HD
+ATOM     28  H2   SX A   1      23.438  61.460  -2.328  0.00  0.00     0.275 HD
+ATOM     29  H3   SX A   1      22.920  61.278  -3.883  0.00  0.00     0.275 HD
+ENDBRANCH  25  26
+BRANCH  25  30
+ATOM     30  C    SX A   1      25.350  63.244  -2.719  0.00  0.00     0.204 C 
+ATOM     31  O    SX A   1      24.568  63.917  -2.033  0.00  0.00    -0.646 OA
+ATOM     32  OXT  SX A   1      26.593  63.311  -2.671  0.00  0.00    -0.646 OA
+ENDBRANCH  25  30
+ENDBRANCH  24  25
+ENDBRANCH  23  24
+ENDBRANCH  22  23
+ENDBRANCH  21  22
+ENDBRANCH   1  21
+BRANCH   3  33
+ATOM     33  O3'  SX A   1      23.291  62.459  -9.755  0.00  0.00    -0.390 OA
+ATOM     34  H3'  SX A   1      23.578  62.522 -10.669  0.00  0.00     0.210 HD
+ENDBRANCH   3  33
+TORSDOF 11

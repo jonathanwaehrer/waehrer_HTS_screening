@@ -1,0 +1,26 @@
+REMARK  3 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: N4_7  and  C7_10 
+REMARK    2  A    between atoms: C7_10  and  C8_11 
+REMARK    3  A    between atoms: C8_11  and  S_12 
+ROOT
+ATOM      1  O1  MES A   1      41.907  11.110  43.281  0.00  0.00    -0.388 OA
+ATOM      2  C2  MES A   1      41.116   9.914  43.273  0.00  0.00     0.187 C 
+ATOM      3  C3  MES A   1      41.842   8.756  42.589  0.00  0.00     0.143 C 
+ATOM      4  N4  MES A   1      43.079   8.537  43.336  0.00  0.00    -0.407 N 
+ATOM      5  C5  MES A   1      43.694   9.630  44.089  0.00  0.00     0.143 C 
+ATOM      6  C6  MES A   1      43.327  10.920  43.356  0.00  0.00     0.187 C 
+ENDROOT
+BRANCH   4   7
+ATOM      7  C7  MES A   1      43.671   7.198  43.323  0.00  0.00     0.134 C 
+BRANCH   7   8
+ATOM      8  C8  MES A   1      45.162   7.296  42.975  0.00  0.00     0.184 C 
+BRANCH   8   9
+ATOM      9  S   MES A   1      45.923   5.726  42.728  0.00  0.00     0.103 S 
+ATOM     10  O1S MES A   1      47.308   6.039  42.432  0.00  0.00    -0.595 OA
+ATOM     11  O2S MES A   1      45.202   5.137  41.615  0.00  0.00    -0.595 OA
+ATOM     12  O3S MES A   1      45.736   5.028  43.987  0.00  0.00    -0.595 OA
+ENDBRANCH   8   9
+ENDBRANCH   7   8
+ENDBRANCH   4   7
+TORSDOF 3

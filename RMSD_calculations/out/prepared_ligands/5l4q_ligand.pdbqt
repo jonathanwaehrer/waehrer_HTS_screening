@@ -1,0 +1,43 @@
+REMARK  3 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK       I    between atoms: N1_5  and  C5_12 
+REMARK    1  A    between atoms: N1_5  and  C6_13 
+REMARK    2  A    between atoms: C2_6  and  C5_12 
+REMARK    3  A    between atoms: C10_17  and  C13_20 
+ROOT
+ATOM      1  N4  LKB A   1     -16.314   5.436 -25.914  0.00  0.00    -0.191 NA
+ATOM      2  C13 LKB A   1     -18.121   0.368 -26.169  0.00  0.00    -0.024 A 
+ATOM      3  C14 LKB A   1     -18.010   1.025 -24.944  0.00  0.00     0.014 A 
+ATOM      4  C15 LKB A   1     -17.554   2.328 -24.865  0.00  0.00     0.023 A 
+ATOM      5  C16 LKB A   1     -17.198   3.011 -26.021  0.00  0.00     0.044 A 
+ATOM      6  C17 LKB A   1     -17.311   2.376 -27.250  0.00  0.00     0.023 A 
+ATOM      7  C18 LKB A   1     -17.767   1.072 -27.319  0.00  0.00     0.014 A 
+ATOM      8  C19 LKB A   1     -16.707   4.365 -25.943  0.00  0.00     0.099 C 
+ENDROOT
+BRANCH   2   9
+ATOM      9  C10 LKB A   1     -18.576  -1.043 -26.239  0.00  0.00    -0.007 A 
+ATOM     10  C9  LKB A   1     -18.454  -1.894 -25.140  0.00  0.00     0.131 A 
+ATOM     11  N3  LKB A   1     -18.836  -3.178 -25.123  0.00  0.00    -0.242 NA
+ATOM     12  C8  LKB A   1     -19.365  -3.627 -26.265  0.00  0.00     0.139 A 
+ATOM     13  N2  LKB A   1     -19.829  -4.889 -26.505  0.00  0.00    -0.348 N 
+ATOM     14  C12 LKB A   1     -19.547  -2.890 -27.441  0.00  0.00     0.039 A 
+ATOM     15  C7  LKB A   1     -20.288  -4.939 -27.791  0.00  0.00     0.120 A 
+ATOM     16  H6  LKB A   1     -19.834  -5.659 -25.844  0.00  0.00     0.167 HD
+ATOM     17  C6  LKB A   1     -20.159  -3.733 -28.476  0.00  0.00     0.064 A 
+ATOM     18  C11 LKB A   1     -19.136  -1.558 -27.413  0.00  0.00     0.031 A 
+BRANCH  17  19
+ATOM     19  N1  LKB A   1     -20.494  -3.350 -29.781  0.00  0.00    -0.321 N 
+ATOM     20  C5  LKB A   1     -20.919  -4.236 -30.743  0.00  0.00     0.257 C 
+ATOM     21  O   LKB A   1     -21.027  -5.440 -30.531  0.00  0.00    -0.267 OA
+ATOM     22  H4  LKB A   1     -20.407  -2.360 -29.988  0.00  0.00     0.169 HD
+BRANCH  20  23
+ATOM     23  C2  LKB A   1     -21.251  -3.658 -32.080  0.00  0.00     0.049 A 
+ATOM     24  C1  LKB A   1     -20.556  -2.581 -32.608  0.00  0.00     0.020 A 
+ATOM     25  C   LKB A   1     -20.897  -2.087 -33.851  0.00  0.00     0.020 A 
+ATOM     26  C4  LKB A   1     -21.930  -2.689 -34.535  0.00  0.00     0.116 A 
+ATOM     27  N   LKB A   1     -22.622  -3.729 -34.056  0.00  0.00    -0.272 NA
+ATOM     28  C3  LKB A   1     -22.276  -4.193 -32.849  0.00  0.00     0.133 A 
+ENDBRANCH  20  23
+ENDBRANCH  17  19
+ENDBRANCH   2   9
+TORSDOF 3

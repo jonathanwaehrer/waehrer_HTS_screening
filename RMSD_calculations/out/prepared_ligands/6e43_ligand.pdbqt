@@ -1,0 +1,67 @@
+REMARK  8 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: C01_1  and  C29_31 
+REMARK    2  A    between atoms: C03_3  and  N18_18 
+REMARK    3  A    between atoms: C04_4  and  N07_7 
+REMARK    4  A    between atoms: N07_7  and  C08_8 
+REMARK    5  A    between atoms: N07_7  and  C12_12 
+REMARK    6  A    between atoms: C08_8  and  C09_9 
+REMARK       I    between atoms: N18_18  and  C19_20 
+REMARK       I    between atoms: C19_20  and  N20_21 
+REMARK    7  A    between atoms: N20_21  and  C21_23 
+REMARK    8  A    between atoms: C31_33  and  C32_34 
+ROOT
+ATOM      1  C01 HQM C   1      22.044  79.750  12.079  0.00  0.00    -0.051 A 
+ATOM      2  C02 HQM C   1      21.627  78.483  12.484  0.00  0.00     0.039 A 
+ATOM      3  C03 HQM C   1      21.707  78.137  13.825  0.00  0.00     0.063 A 
+ATOM      4  C04 HQM C   1      22.287  79.006  14.727  0.00  0.00     0.057 A 
+ATOM      5  C05 HQM C   1      22.682  80.280  14.332  0.00  0.00     0.032 A 
+ATOM      6  C06 HQM C   1      22.569  80.657  12.996  0.00  0.00     0.010 A 
+ENDROOT
+BRANCH   3   7
+ATOM      7  N18 HQM C   1      21.360  76.796  14.268  0.00  0.00    -0.307 N 
+ATOM      8  H18 HQM C   1      21.854  76.400  15.055  0.00  0.00     0.170 HD
+ATOM      9  C19 HQM C   1      20.332  76.007  13.621  0.00  0.00     0.325 C 
+ATOM     10  N20 HQM C   1      20.225  74.669  14.177  0.00  0.00    -0.309 N 
+ATOM     11  O28 HQM C   1      19.634  76.459  12.765  0.00  0.00    -0.247 OA
+ATOM     12  H20 HQM C   1      20.833  74.372  14.927  0.00  0.00     0.170 HD
+BRANCH  10  13
+ATOM     13  C21 HQM C   1      19.222  73.764  13.631  0.00  0.00     0.036 A 
+ATOM     14  C22 HQM C   1      19.629  72.460  13.356  0.00  0.00     0.030 A 
+ATOM     15  C23 HQM C   1      18.720  71.560  12.815  0.00  0.00     0.009 A 
+ATOM     16  C24 HQM C   1      17.423  72.013  12.566  0.00  0.00    -0.062 A 
+ATOM     17  C25 HQM C   1      17.035  73.319  12.835  0.00  0.00     0.009 A 
+ATOM     18  C27 HQM C   1      16.393  71.035  11.964  0.00  0.00     0.048 C 
+ATOM     19  C26 HQM C   1      17.935  74.216  13.376  0.00  0.00     0.030 A 
+ENDBRANCH  10  13
+ENDBRANCH   3   7
+BRANCH   4  20
+ATOM     20  N07 HQM C   1      22.382  78.637  16.177  0.00  0.00    -0.374 N 
+BRANCH  20  21
+ATOM     21  C08 HQM C   1      23.680  78.679  16.946  0.00  0.00     0.127 C 
+BRANCH  21  22
+ATOM     22  C09 HQM C   1      24.920  78.486  16.006  0.00  0.00    -0.005 C 
+ATOM     23  C10 HQM C   1      26.161  79.094  16.738  0.00  0.00     0.011 C 
+ATOM     24  C11 HQM C   1      25.063  76.980  15.761  0.00  0.00     0.011 C 
+ENDBRANCH  21  22
+ENDBRANCH  20  21
+BRANCH  20  25
+ATOM     25  C12 HQM C   1      21.050  78.508  16.898  0.00  0.00     0.084 C 
+ATOM     26  C13 HQM C   1      21.140  77.601  18.121  0.00  0.00     0.025 C 
+ATOM     27  C14 HQM C   1      19.799  77.673  18.890  0.00  0.00     0.002 C 
+ATOM     28  C15 HQM C   1      19.445  79.123  19.255  0.00  0.00     0.000 C 
+ATOM     29  C16 HQM C   1      19.405  80.063  18.042  0.00  0.00     0.002 C 
+ATOM     30  C17 HQM C   1      20.725  79.965  17.254  0.00  0.00     0.025 C 
+ENDBRANCH  20  25
+ENDBRANCH   4  20
+BRANCH   1  31
+ATOM     31  C29 HQM C   1      21.914  80.159  10.585  0.00  0.00     0.034 A 
+ATOM     32  C30 HQM C   1      21.403  79.405   9.353  0.00  0.00     0.026 A 
+ATOM     33  C31 HQM C   1      20.650  80.629   9.862  0.00  0.00     0.096 A 
+BRANCH  33  34
+ATOM     34  C32 HQM C   1      19.330  80.363  10.607  0.00  0.00     0.177 C 
+ATOM     35  O33 HQM C   1      18.698  79.273  10.472  0.00  0.00    -0.648 OA
+ATOM     36  O34 HQM C   1      18.869  81.256  11.362  0.00  0.00    -0.648 OA
+ENDBRANCH  33  34
+ENDBRANCH   1  31
+TORSDOF 8
