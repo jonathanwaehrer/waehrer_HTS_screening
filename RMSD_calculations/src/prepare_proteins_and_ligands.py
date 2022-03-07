@@ -1,6 +1,6 @@
 """
 Purpose of this script is the preparation of the proteins using LePro and the preparation of ligands using open babel
- LePro to prepare proteins and openbabel to prepare ligands
+LePro to prepare proteins and openbabel to prepare ligands.
 """
 # ====================================================== IMPORTS ===================================================== #
 import os
