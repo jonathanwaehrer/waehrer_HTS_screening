@@ -22,9 +22,10 @@ def main():
 
     print("# ================== RMSD COMPARISON OF DOCKING TOOLS ================= #")
     print("# ---- Receptor- and Ligand-preparation for Vina, Smina and LeDock ---- #")
-    #preparation.run(input_proteins=proteins, path_to_bin=bin_path, system = system)
+    # preparation.run(input_proteins=proteins, path_to_bin=bin_path, system = system)
     print("# ------- Docking original ligands using Vina, Smina and LeDock ------- #")
-    docking.run(ligand_dir=prepared_ligand_dir, protein_dir=prepared_protein_dir, results_dir=docking_results_dir, system = system)
+    docking.run(ligand_dir=prepared_ligand_dir, protein_dir=prepared_protein_dir, results_dir=docking_results_dir,
+                bin_dir=bin_path, system=system)
 
 
 if __name__ == "__main__":
