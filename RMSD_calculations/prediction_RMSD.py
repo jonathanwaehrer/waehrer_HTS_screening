@@ -5,6 +5,7 @@ order to determine the RMSD of the prediction from the actual ligand position.
 # ====================================================== IMPORTS ===================================================== #
 import src.prepare_proteins_and_ligands as preparation
 import src.RMSD_experiment_docking as docking
+import src.calculate_RMSD as calculate_RMSD
 import os
 
 
@@ -22,7 +23,7 @@ def main():
     prepared_ligand_dir = "out/prepared_ligands/"
     prepared_protein_dir = "out/prepared_proteins/"
     docking_results_dir = "out/docking_results/"
-    rmsd_dir = "out/docking_results/"
+    rmsd_dir = "out/RMSD/"
 
     print("# ================== RMSD COMPARISON OF DOCKING TOOLS ================= #")
     print("# ---- Receptor- and Ligand-preparation for Vina, Smina and LeDock ---- #")
@@ -30,6 +31,7 @@ def main():
     print("# ------- Docking original ligands using Vina, Smina and LeDock ------- #")
     # docking.run(ligand_dir=prepared_ligand_dir, protein_dir=prepared_protein_dir, results_dir=docking_results_dir, bin_dir=bin_path, system=system)
     print("# ------ Computing RMSD between predicted and original positions ------ #")
+    calculate_RMSD.run(original_lig_dir=prepared_ligand_dir, predicted_lig_dir=docking_results_dir, rmsd_dir=rmsd_dir)
 
 
 if __name__ == "__main__":
