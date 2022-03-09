@@ -196,6 +196,10 @@ def vina_docking(ligand_dir, protein_dir, protein, docking_coordinates, results_
     docked_ligand_file = results_dir + "vina_output/" + protein + "_docked_ligand.pdbqt"
     docked_ligand_sdf = results_dir + "vina_output/" + protein + "_docked_ligand.sdf"
 
+    # ---- Set up directory ---- #
+    if not os.path.exists(results_dir + "vina_output"):
+        os.mkdir(results_dir + "vina_output")
+
     # ---- setting up vina ---- #
     v = Vina(sf_name='Vina', seed=42)
     v.set_receptor(protein_file)
@@ -227,6 +231,10 @@ def smina_docking(ligand_dir, protein_dir, protein, docking_coordinates, results
     systems = ['mac', 'linux']
     if system not in systems:
         raise ValueError("Invalid OS. Expected one of: %s" % systems)
+
+    # ---- Set up directory ---- #
+    if not os.path.exists(results_dir + "smina_output"):
+        os.mkdir(results_dir + "smina_output")
 
     # ---- paths, directories, general variables ---- #
     # Input
@@ -269,6 +277,10 @@ def ledock_docking(ligand_dir, protein_dir, protein, docking_coordinates, result
     if system not in systems:
         raise ValueError("Invalid OS. Expected one of: %s" % systems)
 
+    # ---- Set up directory ---- #
+    if not os.path.exists(results_dir + "ledock_output"):
+        os.mkdir(results_dir + "ledock_output")
+
     # ---- paths, directories, general variables ---- #
     # >>>> NOTE: Some paths must be relative to the binary executable of LeDock instead of the main script
     # Input
@@ -310,6 +322,9 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
     bin_dir: Binary executables.
     system: Operating system. Choose mac (default) or linux.
     """
+    # ---- Set up directory ---- #
+    if not os.path.exists(results_dir):
+        os.mkdir(results_dir)
     # ---- Check input system (LeDock and Smina are only available for mac and linux) ---- #
     systems = ['mac', 'linux']
     if system not in systems:
@@ -364,6 +379,3 @@ def run(ligand_dir, protein_dir, results_dir, bin_dir, system='mac'):
         raise ValueError("Invalid OS. Expected one of: %s" % systems)
     dock_ligands(ligand_dir=ligand_dir, protein_dir=protein_dir, results_dir=results_dir, bin_dir=bin_dir,
                  system=system)
-
-    # t1 = "/Users/jonathanwahrer/Desktop/Msc/3_Semester/Drug_Design_Praktikum/waehrer_HTS_screening/RMSD_calculations/out/prepared_ligands/2jam_ligand.mol2"
-    # test = get_box(t1, software="both")

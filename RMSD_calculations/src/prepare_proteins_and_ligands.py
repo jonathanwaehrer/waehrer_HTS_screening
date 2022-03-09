@@ -67,6 +67,8 @@ def prepare_ligands_for_vina(bin_dir: str):
     # ---- Get file path of output directory ---- #
     current_dir = os.path.dirname(os.path.realpath(__file__))
     ligand_dir = current_dir + "/../out/prepared_ligands"
+    if not os.path.exists(ligand_dir):
+        os.mkdir(ligand_dir)
     bin_dir = os.path.dirname(bin_dir)
 
     # ---- get ligands and apply tool for pdbqt conversion ---- #
