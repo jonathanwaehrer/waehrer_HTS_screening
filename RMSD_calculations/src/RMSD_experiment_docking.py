@@ -307,7 +307,7 @@ def ledock_docking(ligand_dir, protein_dir, protein, docking_coordinates, result
     os.system("mv %s*.dok %s" % (ligand_dir, results_dir+"ledock_output/"))
 
     dok_to_sdf(dok_file=results_dir+"ledock_output/"+protein+"_ligand.dok",
-               output=results_dir+"ledock_output/"+protein+"_ledock_out.sdf")
+               output=docked_ligand_sdf)
 
 
 def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: str, system='mac'):
@@ -338,7 +338,7 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
         dock_boxes.append(get_box(ligand=ligand_file, software='both'))  # index 0: vina format; index 1: LeDock format
 
     # ---- docking using Vina ---- #
-    print("...docking %d proteins with Autodock Vina..." % len(protein_names))
+    '''print("...docking %d proteins with Autodock Vina..." % len(protein_names))
     for i, protein_setup in enumerate(zip(protein_names, dock_boxes)):
         print("Protein: ", protein, " (%d/%d)" % (i + 1, len(protein_names)))
 
@@ -346,10 +346,10 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
         protein = protein_setup[0]
         dock_coords = protein_setup[1]
         vina_docking(ligand_dir, protein_dir, protein, dock_coords, results_dir)
-        print("------------------------------------------------------\n")
+        print("------------------------------------------------------\n")'''
 
     # ---- docking using Smina ---- #
-    print("...docking %d proteins with Smina..." % len(protein_names))
+    '''print("...docking %d proteins with Smina..." % len(protein_names))
     for i, protein_setup in enumerate(zip(protein_names, dock_boxes)):
         print("Protein: ", protein, " (%d/%d)" % (i + 1, len(protein_names)))
 
@@ -357,7 +357,7 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
         protein = protein_setup[0]
         dock_coords = protein_setup[1]
         smina_docking(ligand_dir, protein_dir, protein, dock_coords, results_dir, bin_dir, system=system)
-        print("------------------------------------------------------\n")
+        print("------------------------------------------------------\n")'''
 
     # ---- docking using LeDock ---- #
     print("...docking %d proteins with LeDock..." % len(protein_names))
