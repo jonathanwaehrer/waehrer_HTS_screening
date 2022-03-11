@@ -45,7 +45,7 @@ def prepare_proteins(pdb_dir: str, bin_dir: str, system='mac'):
         for pdb in tqdm(os.listdir(pdb_dir)):
             file = os.path.join(pdb_dir, pdb)
             if pdb.endswith(".pdb"):
-                os.system("%s/lepro_mac %s" % (bin_dir, file))
+                os.system("%s/lepro_linux_x86 %s" % (bin_dir, file))
                 os.system("mv pro.pdb %s/%s" % (output_dir, pdb))  # LePro always saves output as 'pro.pdb'
     os.system("rm dock.in")
 

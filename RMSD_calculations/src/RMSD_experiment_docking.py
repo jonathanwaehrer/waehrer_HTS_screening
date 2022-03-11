@@ -331,7 +331,7 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
         raise ValueError("Invalid OS. Expected one of: %s" % systems)
 
     # ---- calculate docking boxes ---- #
-    protein_names = [i.split('.')[0] for i in os.listdir(protein_dir) if i.endswith(".pdb")]  # unique names
+    protein_names = sorted([i.split('.')[0] for i in os.listdir(protein_dir) if i.endswith(".pdb")])  # unique names
     dock_boxes = []
     for protein in tqdm(protein_names, desc="...calculating docking boxes...          "):
         ligand_file = ligand_dir + protein + "_ligand.mol2"
@@ -362,11 +362,12 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
     # ---- docking using LeDock ---- #
     print("...docking %d proteins with LeDock..." % len(protein_names))
     for i, protein_setup in enumerate(zip(protein_names, dock_boxes)):
-        print("Protein: ", protein, " (%d/%d)" % (i + 1, len(protein_names)))
 
         # paths, directories, general variables
         protein = protein_setup[0]
         dock_coords = protein_setup[1]
+        print("Protein: ", protein, " (%d/%d)" % (i + 1, len(protein_names)))
+        # run LeDock
         ledock_docking(ligand_dir, protein_dir, protein, dock_coords, results_dir, bin_dir, system=system)
         print("------------------------------------------------------\n")
 

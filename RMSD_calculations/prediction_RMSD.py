@@ -34,8 +34,8 @@ def main():
     # change and set directories:
     current_path = os.path.dirname(os.path.realpath(__file__))
     os.chdir(current_path)
-    if not os.path.exists("out"):
-        os.mkdir("out")
+    if not os.path.exists(current_path + "/out"):
+        os.mkdir(current_path + "/out")
 
     prepared_ligand_dir = "out/prepared_ligands/"
     prepared_protein_dir = "out/prepared_proteins/"
