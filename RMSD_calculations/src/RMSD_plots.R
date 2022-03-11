@@ -1,6 +1,8 @@
 "
-Purpose of this script is to plot the results of the RMSD experiment using
-ggplot2. 
+Purpose of this script is to plot the results of the RMSD experiment using ggplot2. This script is for plotting only and
+will not be automatically called by the main function of the RMSD experiment (prediction_RMSD.py).
+This script assumes that you run it from the same directory where it is located in. If the filepath can not be found,
+either adjust the path or change the directory accordingly.
 "
 
 # ---- Packages, imports ---- #

@@ -1,6 +1,6 @@
 """
-Purpose of this script is the preparation of the proteins using LePro and the preparation of ligands using open babel
-LePro to prepare proteins and openbabel to prepare ligands.
+Purpose of this script is the preparation of proteins and ligands using LePro and Autodock's provided tools for the
+necessary preprocessing steps for Vina (conversion to .pdbqt files).
 """
 # ====================================================== IMPORTS ===================================================== #
 import os
