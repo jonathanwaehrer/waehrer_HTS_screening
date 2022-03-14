@@ -7,8 +7,9 @@ sampling step of the ligand library (user specifies sample size) as well as prep
 import argparse
 import os
 
-import src.sample_ligands as sample
-import src.prepare_proteins_and_ligands as preparation
+import src.HTS_sample_ligands as sample
+import src.HTS_prepare_proteins_and_ligands as preparation
+import src.HTS_experiment_docking as docking
 
 
 # ==================================================================================================================== #
@@ -37,7 +38,7 @@ def main():
     bin_path = "/Users/jonathanwahrer/Desktop/Msc/3_Semester/Drug_Design_Praktikum/waehrer_HTS_screening/bin/"
     system = "mac"
     lig_library = "/Users/jonathanwahrer/Desktop/Msc/3_Semester/Drug_Design_Praktikum/waehrer_HTS_screening/data/ligands/"
-    sample_size = 500
+    sample_size = 3
     seed = 42
 
     # change and set directories:
@@ -49,13 +50,18 @@ def main():
     prepared_protein_dir = current_path + "/out/prepared_proteins/"
     docking_results_dir = current_path + "/out/docking_results/"
 
-    pre = True
+    pre = False
     print("# ================== VIRTUAL SCREENING WITH DOCKING TOOLS ================= #")
+    # Preprocessing:
     if pre:
         print("# ------------------------- Sampling ligands -------------------------- #")
         sample.run(ligand_library=lig_library, sample_directory=prepared_ligand_dir, sample_size=sample_size, seed=seed)
-        print("# ---- Receptor- and Ligand-preparation for Vina, Smina and LeDock ---- #")
+        print("\n# ---- Receptor- and Ligand-preparation for Vina, Smina and LeDock ---- #")
         preparation.run(input_proteins=proteins, path_to_bin=bin_path, system=system)
+    # Actual HTS:
+    print("# ------------ Performing HTS using Vina, Smina and LeDock ------------ #")
+    docking.run(ligand_dir=prepared_ligand_dir, protein_dir=prepared_protein_dir, results_dir=docking_results_dir,
+                bin_dir=bin_path, system=system)
 
 
 if __name__ == "__main__":
