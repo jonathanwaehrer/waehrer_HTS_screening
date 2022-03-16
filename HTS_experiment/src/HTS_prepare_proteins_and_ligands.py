@@ -37,18 +37,19 @@ def prepare_proteins(pdb_dir: str, bin_dir: str, system='mac'):
         os.mkdir(output_dir)
 
     # ---- Iteratively use LePro (either for mac or linux) on pdb files---- #
-    if system == 'mac':
-        for pdb in tqdm(os.listdir(pdb_dir), desc="...preparing receptors...                      "):
+    for pdb in tqdm(os.listdir(pdb_dir), desc="...preparing receptors...                      "):
+        if pdb.endswith(".pdb"):  # problem with mac: often, invisible .DS_Store files are saved causing errors.
             file = os.path.join(pdb_dir, pdb)
-            if pdb.endswith(".pdb"):  # problem with mac: often, invisible .DS_Store files are saved causing errors.
+            if system == 'mac':
                 os.system("%s/lepro_mac %s" % (bin_dir, file))
                 os.system("mv pro.pdb %s/%s" % (output_dir, pdb))  # LePro always saves output as 'pro.pdb'
-    else:
-        for pdb in tqdm(os.listdir(pdb_dir)):
-            file = os.path.join(pdb_dir, pdb)
-            if pdb.endswith(".pdb"):
-                os.system("%s/lepro_mac %s" % (bin_dir, file))
+            else:
+                os.system("%s/lepro_linux_x86 %s" % (bin_dir, file))
                 os.system("mv pro.pdb %s/%s" % (output_dir, pdb))  # LePro always saves output as 'pro.pdb'
+    """
+    LePro automatically generates a .config file that could be used for docking with LeDock. 
+    However, manual docking boxes will be used in this experiment.
+    """
     os.system("rm dock.in")
 
     # ---- Vina requires .pdbqt files for docking (AutoDock provides a tool for that) ---- #
