@@ -340,34 +340,33 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
     # ---- docking using Vina ---- #
     print("...docking %d proteins with Autodock Vina..." % len(protein_names))
     for i, protein_setup in enumerate(zip(protein_names, dock_boxes)):
-        print("Protein: ", protein, " (%d/%d)" % (i + 1, len(protein_names)))
-
         # paths, directories, general variables
         protein = protein_setup[0]
         dock_coords = protein_setup[1]
+        # run Vina
+        print("Protein: ", protein, " (%d/%d)" % (i + 1, len(protein_names)))
         vina_docking(ligand_dir, protein_dir, protein, dock_coords, results_dir)
         print("------------------------------------------------------\n")
 
     # ---- docking using Smina ---- #
     print("...docking %d proteins with Smina..." % len(protein_names))
     for i, protein_setup in enumerate(zip(protein_names, dock_boxes)):
-        print("Protein: ", protein, " (%d/%d)" % (i + 1, len(protein_names)))
-
         # paths, directories, general variables
         protein = protein_setup[0]
         dock_coords = protein_setup[1]
+        # run Smina
+        print("Protein: ", protein, " (%d/%d)" % (i + 1, len(protein_names)))
         smina_docking(ligand_dir, protein_dir, protein, dock_coords, results_dir, bin_dir, system=system)
         print("------------------------------------------------------\n")
 
     # ---- docking using LeDock ---- #
     print("...docking %d proteins with LeDock..." % len(protein_names))
     for i, protein_setup in enumerate(zip(protein_names, dock_boxes)):
-
         # paths, directories, general variables
         protein = protein_setup[0]
         dock_coords = protein_setup[1]
-        print("Protein: ", protein, " (%d/%d)" % (i + 1, len(protein_names)))
         # run LeDock
+        print("Protein: ", protein, " (%d/%d)" % (i + 1, len(protein_names)))
         ledock_docking(ligand_dir, protein_dir, protein, dock_coords, results_dir, bin_dir, system=system)
         print("------------------------------------------------------\n")
 
