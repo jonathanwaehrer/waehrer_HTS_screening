@@ -302,9 +302,10 @@ def smina_HTS_docking(ligand_dir, protein_dir, protein, docking_coordinates, res
     smina_box_center = " --center_x %.3f --center_y %.3f --center_z %.3f" % (box_center['center_x'], box_center['center_y'], box_center['center_z'])
     smina_box_size = " --size_x %.3f --size_y %.3f --size_z %.3f" % (box_size['size_x'], box_size['size_y'], box_size['size_z'])
     smina_specs = " --exhaustiveness 5 --num_modes 1 --seed -42"
+    smina_log_out = " --log %s" % (docked_ligand_sdf.rstrip(".sdf") + ".log")
 
     start = time.time()  # start timer
-    os.system(smina_binary + smina_input + smina_box_center + smina_box_size + smina_specs)
+    os.system(smina_binary + smina_input + smina_box_center + smina_box_size + smina_specs + smina_log_out)
     return time.time() - start  # end timer
 
 
@@ -397,7 +398,7 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
         raise ValueError("Invalid OS. Expected one of: %s" % systems)
 
     # ---- calculate docking boxes ---- #
-    protein_names = sorted([i.split('.')[0] for i in os.listdir(protein_dir) if i.endswith(".pdb")])[:2]  # unique names
+    protein_names = sorted([i.split('.')[0] for i in os.listdir(protein_dir) if i.endswith(".pdb")])[0:1]  # unique names
     original_ligand_names = sorted([i for i in os.listdir(original_ligands_dir) if i.endswith(".mol2")])
     dock_boxes = []
     for protein, ligand in tqdm(zip(protein_names, original_ligand_names), desc="...calculating docking boxes...          ",
@@ -405,8 +406,8 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
         ligand = original_ligands_dir + ligand
         dock_boxes.append(get_box(ligand=ligand, software='both'))  # index 0: vina format; index 1: LeDock format
 
-    '''# ---- docking using Vina ---- #
-    print("...docking %d proteins with Autodock Vina..." % len(protein_names))
+    # ---- docking using Vina ---- #
+    print("...docking %d protein(s) with Autodock Vina..." % len(protein_names))
     # Lists for time comparison
     vina_times = []  # keeps track of elapsed time in seconds for each ligand that was docked to a single receptor
     vina_ligands = []
@@ -426,10 +427,10 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
 
     # save measured time as .tsv:
     vina_times_df = pd.DataFrame({'dock_time': vina_times, 'ligand': vina_ligands, 'protein': vina_proteins})
-    vina_times_df.to_csv(os.path.join(results_dir, "vina_output", "vina_docking_times.tsv"), sep="\t", index=False)'''
+    vina_times_df.to_csv(os.path.join(results_dir, "vina_output", "vina_docking_times.tsv"), sep="\t", index=False)
 
     # ---- docking using Smina ---- #
-    print("...docking %d proteins with Smina..." % len(protein_names))
+    print("...docking %d protein(s) with Smina..." % len(protein_names))
     # Lists for time comparison
     smina_times = []  # keeps track of elapsed time in seconds for each ligand that was docked to a single receptor
     smina_proteins = []
@@ -450,7 +451,7 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
     vina_times_df.to_csv(os.path.join(results_dir, "smina_output", "smina_docking_times.tsv"), sep="\t", index=False)
 
     # ---- docking using LeDock ---- #
-    print("...docking %d proteins with LeDock..." % len(protein_names))
+    print("...docking %d protein(s) with LeDock..." % len(protein_names))
     # Lists for time comparison
     ledock_times = []  # keeps track of elapsed time in seconds for each ligand that was docked to a single receptor
     ledock_proteins = []
