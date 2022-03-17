@@ -29,12 +29,11 @@ def main():
     parser.add_argument("--seed", help="Seed for sampling during preprocessing (=42).", type=int, default=42)
     args = parser.parse_args()
 
+    # ---- Assign variables from arguments ---- #
     # Check for missing inputs
     if args.pre:
-        if args.ligands not in args:
+        if args.ligands is None:
             raise ValueError("Preprocessing requires '--ligands' as input directory.")
-        if args.sample not in args:
-            raise ValueError("Preprocessing requires '--sample' for sample size.")
         lig_library = args.ligands
         sample_size = args.sample
 
@@ -43,12 +42,12 @@ def main():
     system = args.os
     seed = args.seed
 
-    # Check input system (LePro is only available for mac and linux)
+    # ---- Check input system (LePro is only available for mac and linux) ---- #
     systems = ['mac', 'linux']
     if system not in systems:
         raise ValueError("Invalid OS. Expected one of: %s" % systems)
 
-    # change and set directories:
+    # ---- Change and set directories ---- #
     current_path = os.path.dirname(os.path.realpath(__file__))
     os.chdir(current_path)
     if not os.path.exists(current_path + "/out"):
@@ -57,6 +56,7 @@ def main():
     prepared_protein_dir = current_path + "/out/prepared_proteins/"
     docking_results_dir = current_path + "/out/docking_results/"
 
+    # ---- Start run ---- #
     print("# ================== VIRTUAL SCREENING WITH DOCKING TOOLS ================= #")
     # Preprocessing:
     if args.pre:

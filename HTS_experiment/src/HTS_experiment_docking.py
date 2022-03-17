@@ -398,7 +398,7 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
         raise ValueError("Invalid OS. Expected one of: %s" % systems)
 
     # ---- calculate docking boxes ---- #
-    protein_names = sorted([i.split('.')[0] for i in os.listdir(protein_dir) if i.endswith(".pdb")])[0:1]  # unique names
+    protein_names = sorted([i.split('.')[0] for i in os.listdir(protein_dir) if i.endswith(".pdb")])[0:2]  # unique names
     original_ligand_names = sorted([i for i in os.listdir(original_ligands_dir) if i.endswith(".mol2")])
     dock_boxes = []
     for protein, ligand in tqdm(zip(protein_names, original_ligand_names), desc="...calculating docking boxes...          ",
