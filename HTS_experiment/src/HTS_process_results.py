@@ -42,9 +42,10 @@ def count_non_hydrogen_atoms(ligand_dir):
     return atom_counts, ligand_names
 
 
-def get_smina_scores(input_sdf):
+def get_scores_from_sdf(input_sdf, score_entry_string):
     """
-    Extracts the score of all poses in a multi-.sdf resulting from Smina.
+    Extracts the score of all poses from .sd-files. Depending on the docking tool, the score either follows the line
+    ">  <Score>" (Vina and LeDock) or "> <minimizedAffinity>"
 
     Smina .sd-files contain all predicted poses in a single file. The score of a predicted ligand/pose follows right
     after the line '> <minimizedAffinity>'. This means that this pattern can be used to append the desired line
@@ -53,10 +54,11 @@ def get_smina_scores(input_sdf):
     Parameters
     ----------
     input_sdf: Path to .sdf.
+    score_entry_string: String preceding the score. ">  <Score>" (Vina and LeDock) or "> <minimizedAffinity>" (Smina)
 
     Returns
     ----------
-    List containing the score for each pose.
+    List containing the scores for each pose.
     """
     scores = []
     next_line = False
@@ -65,7 +67,7 @@ def get_smina_scores(input_sdf):
     for line in predicted_poses.readlines():
         if next_line:
             scores.append(float(line))
-        if line.startswith("> <minimizedAffinity>"):
+        if line.startswith(score_entry_string):
             # This means that the next iteration will contain the score => set next_line to true to get the score
             next_line = True
         else:
@@ -73,10 +75,12 @@ def get_smina_scores(input_sdf):
     return scores
 
 
-def parse_results(results_dir, ligand_dir):
+def get_scores(results_dir, ligand_dir):
     """
     Iterates over results directories and calls corresponding functions to extract score and calculate ligand
-    efficiencies
+    efficiencies. Depending on the docking tool and its corresponding output, the results must be handled differently
+    (for an example, Smina outputs a multi-.sd-file per protein, while Vina and LeDock have one .sdf per docked ligand
+    as output).
 
     Parameters
     ----------
@@ -86,24 +90,60 @@ def parse_results(results_dir, ligand_dir):
     # ---- Get ligand atom counts and names ---- #
     counts, names = count_non_hydrogen_atoms(ligand_dir)
 
+    # ---- Get vina scores from single .sd-files ---- #
+    vina_results = sorted(glob(results_dir + "vina_output/*/*.sdf"))
+    scores = []
+    protein_names = []
+    for vina_sdf in tqdm(vina_results, desc="...parsing Vina output (single .sd-files)...   "):
+        scores.extend(get_scores_from_sdf(input_sdf=vina_sdf, score_entry_string=">  <Score>"))
+        protein_names.append(vina_sdf.split('/')[-2])
+
+    # Create dataframe of scores and calculate ligand efficiency
+    multiplication_factor = int(len(vina_results)/len(names))  # ratio: #docked ligands versus ligand library size
+    vina_scores_df = pd.DataFrame(
+        {'name': names * multiplication_factor, 'docked_protein': protein_names, 'score': scores,
+         'no_atoms': counts * multiplication_factor})
+    vina_scores_df['ligand_efficiency'] = vina_scores_df['score'] / vina_scores_df['no_atoms']
+    # Save as .tsv
+    vina_data_file = os.path.join(results_dir, "vina_output", "vina_HTS_results.tsv")
+    vina_scores_df.to_csv(vina_data_file, index=False)
+
     # ---- Get smina scores from multi .sd-files ---- #
     smina_results = sorted(glob(results_dir + "smina_output/*/*.sdf"))
-    smina_scores = []
+    scores = []
     protein_names = []
     for smina_sdf in tqdm(smina_results, desc="...parsing Smina output (multi .sd-files)...   "):
-        smina_scores.extend(get_smina_scores(smina_sdf))
-        protein_names.extend([smina_sdf.split('/')[-2]] * len(names))  # for long dataframe format
+        scores.extend(get_scores_from_sdf(input_sdf=smina_sdf, score_entry_string="> <minimizedAffinity>"))
+        protein_names.extend([smina_sdf.split('/')[-2]] * len(names))  # protein name for long dataframe format
 
-    # ---- Create dataframe of scores and calculate ligand efficiency ---- #
+    # Create dataframe of scores and calculate ligand efficiency 
     smina_scores_df = pd.DataFrame(
-        {'name': names * len(smina_results), 'docked_protein': protein_names, 'score': smina_scores,
+        {'name': names * len(smina_results), 'docked_protein': protein_names, 'score': scores,
          'no_atoms': counts * len(smina_results)})
     smina_scores_df['ligand_efficiency'] = smina_scores_df['score'] / smina_scores_df['no_atoms']
     # Save as .tsv
-    smina_data_file = os.path.join(results_dir, "smina_output", "Smina_HTS_results.tsv")
+    smina_data_file = os.path.join(results_dir, "smina_output", "smina_HTS_results.tsv")
     smina_scores_df.to_csv(smina_data_file, index=False)
+
+    # ---- Get LeDock scores from single .sd-files (similar to vina)---- #
+    ledock_results = sorted(glob(results_dir + "ledock_output/*/*.sdf"))
+    scores = []
+    protein_names = []
+    for ledock_sdf in tqdm(ledock_results, desc="...parsing LeDock output (single .sd-files)...   "):
+        scores.extend(get_scores_from_sdf(input_sdf=ledock_sdf, score_entry_string=">  <Score>"))
+        protein_names.append(ledock_sdf.split('/')[-2])
+
+    # Create dataframe of scores and calculate ligand efficiency
+    multiplication_factor = int(len(vina_results) / len(names))  # ratio: #docked ligands versus ligand library size
+    ledock_scores_df = pd.DataFrame(
+        {'name': names * multiplication_factor, 'docked_protein': protein_names, 'score': scores,
+         'no_atoms': counts * multiplication_factor})
+    ledock_scores_df['ligand_efficiency'] = ledock_scores_df['score'] / ledock_scores_df['no_atoms']
+    # Save as .tsv
+    ledock_data_file = os.path.join(results_dir, "ledock_output", "ledock_HTS_results.tsv")
+    ledock_scores_df.to_csv(ledock_data_file, index=False)
 
 
 # ==================================================================================================================== #
 def run(results_dir, ligand_dir):
-    parse_results(results_dir, ligand_dir)
+    get_scores(results_dir, ligand_dir)
