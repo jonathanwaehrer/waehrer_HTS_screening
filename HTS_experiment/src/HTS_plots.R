@@ -16,7 +16,7 @@ data_path = paste0(script_path, '/../out/docking_results/HTS_plots/')  # directo
 full_top_50 = read.csv(paste0(data_path, "top_50_ligands.tsv"), sep = '\t')
 p1 = ggplot(full_top_50, aes(x=name, y=score, color=Tool)) + 
   # line
-  geom_line() + 
+  geom_line() + geom_point(alpha=0.3) +
   # facets
   facet_wrap(~full_top_50[,'docked_protein'], ncol = 2) +
   # theme, labels
