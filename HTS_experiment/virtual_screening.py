@@ -66,9 +66,9 @@ def main():
         preparation.run(input_proteins=proteins, path_to_bin=bin_path, system=system)
     # Actual HTS:
     print("# ------------ Performing HTS using Vina, Smina and LeDock ------------ #")
-    docking.run(ligand_dir=prepared_ligand_dir, protein_dir=prepared_protein_dir, original_ligands_dir=original_ligand_path, results_dir=docking_results_dir, bin_dir=bin_path, system=system)
+    # docking.run(ligand_dir=prepared_ligand_dir, protein_dir=prepared_protein_dir, original_ligands_dir=original_ligand_path, results_dir=docking_results_dir, bin_dir=bin_path, system=system)
     print("# ------------------- Parsing HTS docking results --------------------- #")
-    # postprocessing.run(results_dir=docking_results_dir, ligand_dir=prepared_ligand_dir)
+    postprocessing.run(results_dir=docking_results_dir, ligand_dir=prepared_ligand_dir)
 
 
 if __name__ == "__main__":

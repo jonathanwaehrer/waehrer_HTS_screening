@@ -86,7 +86,7 @@ def parse_results(results_dir, ligand_dir):
     # ---- Get ligand atom counts and names ---- #
     counts, names = count_non_hydrogen_atoms(ligand_dir)
 
-    # ---- Get smina scores from multi .sd-files---- #
+    # ---- Get smina scores from multi .sd-files ---- #
     smina_results = sorted(glob(results_dir + "smina_output/*/*.sdf"))
     smina_scores = []
     protein_names = []
@@ -94,13 +94,14 @@ def parse_results(results_dir, ligand_dir):
         smina_scores.extend(get_smina_scores(smina_sdf))
         protein_names.extend([smina_sdf.split('/')[-2]] * len(names))  # for long dataframe format
 
-    # Create dataframe of scores and calculate ligand efficiency
+    # ---- Create dataframe of scores and calculate ligand efficiency ---- #
     smina_scores_df = pd.DataFrame(
         {'name': names * len(smina_results), 'docked_protein': protein_names, 'score': smina_scores,
          'no_atoms': counts * len(smina_results)})
-    smina_scores_df.to_csv("test.csv", index=False)
-    '''vina_times_df = pd.DataFrame({'dock_time': smina_times, 'protein': smina_proteins})
-    vina_times_df.to_csv(os.path.join(results_dir, "smina_output", "smina_docking_times.tsv"), sep="\t", index=False)'''
+    smina_scores_df['ligand_efficiency'] = smina_scores_df['score'] / smina_scores_df['no_atoms']
+    # Save as .tsv
+    smina_data_file = os.path.join(results_dir, "smina_output", "Smina_HTS_results.tsv")
+    smina_scores_df.to_csv(smina_data_file, index=False)
 
 
 # ==================================================================================================================== #

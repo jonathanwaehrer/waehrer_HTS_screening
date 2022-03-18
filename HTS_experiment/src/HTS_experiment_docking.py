@@ -396,8 +396,8 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
     if not os.path.exists(results_dir):
         os.mkdir(results_dir)
     current_path = os.path.dirname(os.path.realpath(__file__))
-    #original_ligands_dir = os.path.join(current_path, "../../data/original_protein_ligands/")
     original_ligands_dir = original_ligands_dir
+
     # ---- Check input system (LeDock and Smina are only available for mac and linux) ---- #
     systems = ['mac', 'linux']
     if system not in systems:
