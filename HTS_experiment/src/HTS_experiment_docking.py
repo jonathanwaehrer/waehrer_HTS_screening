@@ -160,7 +160,7 @@ def generate_ledock_file(receptor='pro.pdb', rmsd=1.0, x=[0, 0], y=[0, 0], z=[0,
     with open(l_list_outfile, 'w') as l_out:
         for element in l_list:
             element = element[element.find("/out"):][1:]  # Modified, because of LeDock path problem
-            l_out.write(element+"\n")
+            l_out.write(element + "\n")
     l_out.close()
 
     # Modified, because of LeDock path problem:
@@ -211,7 +211,8 @@ def vina_HTS_docking(ligand_dir, protein_dir, protein, docking_coordinates, resu
     """
     # ---- paths, directories, general variables ---- #
     # Input
-    ligand_files = sorted(glob(ligand_dir + "[!concatenated_ligands]*.pdbqt")) # this excludes concatenated_ligands.mol2
+    ligand_files = sorted(
+        glob(ligand_dir + "[!concatenated_ligands]*.pdbqt"))  # this excludes concatenated_ligands.mol2
     protein_file = protein_dir + protein + ".pdbqt"
     box_center, box_size = docking_coordinates[0]
 
@@ -231,7 +232,7 @@ def vina_HTS_docking(ligand_dir, protein_dir, protein, docking_coordinates, resu
     ligand_docking_times = []  # will contain docking times per ligand for the current protein
     docked_ligands = []
     docked_protein = []
-    for ligand in tqdm(ligand_files,     desc="...%s: docking ligands...                  " % protein):
+    for ligand in tqdm(ligand_files, desc="...%s: docking ligands...                  " % protein):
         # update tracking arrays
         docked_ligands.append(os.path.basename(ligand)[:-6])
         docked_protein.append(protein)
@@ -287,10 +288,10 @@ def smina_HTS_docking(ligand_dir, protein_dir, protein, docking_coordinates, res
     ligand_file = os.path.join(ligand_dir, multi_mol_name)
     if not os.path.exists(ligand_file):
         raise FileNotFoundError(ligand_file + " does not exists, but is required for Smina HTS-docking.")
-    protein_file = os.path.join(protein_dir, protein+".pdb")
+    protein_file = os.path.join(protein_dir, protein + ".pdb")
     box_center, box_size = docking_coordinates[0]
     # Output
-    docked_ligand_sdf = os.path.join(results_dir, "smina_output/", protein, protein+"_docked_ligands_smina.sdf")
+    docked_ligand_sdf = os.path.join(results_dir, "smina_output/", protein, protein + "_docked_ligands_smina.sdf")
     # Executable
     if system == 'mac':
         smina_binary = bin_dir + "smina.osx"
@@ -299,8 +300,10 @@ def smina_HTS_docking(ligand_dir, protein_dir, protein, docking_coordinates, res
     # ---- docking ---- #
     # Smina is called via the command line (os.system). Partial strings for better readability:
     smina_input = " -r %s -l %s -o %s" % (protein_file, ligand_file, docked_ligand_sdf)
-    smina_box_center = " --center_x %.3f --center_y %.3f --center_z %.3f" % (box_center['center_x'], box_center['center_y'], box_center['center_z'])
-    smina_box_size = " --size_x %.3f --size_y %.3f --size_z %.3f" % (box_size['size_x'], box_size['size_y'], box_size['size_z'])
+    smina_box_center = " --center_x %.3f --center_y %.3f --center_z %.3f" % (
+        box_center['center_x'], box_center['center_y'], box_center['center_z'])
+    smina_box_size = " --size_x %.3f --size_y %.3f --size_z %.3f" % (
+        box_size['size_x'], box_size['size_y'], box_size['size_z'])
     smina_specs = " --exhaustiveness 5 --num_modes 1 --seed -42"
     smina_log_out = " --log %s" % (docked_ligand_sdf.rstrip(".sdf") + ".log")
 
@@ -346,8 +349,8 @@ def ledock_HTS_docking(ligand_dir, protein_dir, protein, docking_coordinates, re
     ligand_files = sorted(glob(ligand_dir + "[!concatenated_ligands]*.mol2"))  # excludes concatenated_ligands.mol2
     X, Y, Z = docking_coordinates[1]
     # Output
-    docking_instructions = os.path.join(results_dir, "ledock_output/", protein, protein+"_dock.in")
-    ligand_list_out = os.path.join(results_dir, "ledock_output/", protein, protein+"_ligand.list")
+    docking_instructions = os.path.join(results_dir, "ledock_output/", protein, protein + "_dock.in")
+    ligand_list_out = os.path.join(results_dir, "ledock_output/", protein, protein + "_ligand.list")
     # Executable
     if system == 'mac':
         ledock_binary = bin_dir + "ledock_mac "
@@ -374,34 +377,38 @@ def ledock_HTS_docking(ligand_dir, protein_dir, protein, docking_coordinates, re
     return end
 
 
-def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: str, system='mac'):
+def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: str, original_ligands_dir: str,
+                 system='mac'):
     """
     Performs docking of all proteins in a directory with their respective ligand using Vina, Smina and LeDock.
     Additionally, this function also saves the required docking time per protein as .tsv file.
 
     Parameters
     ----------
-    ligand_dir: Filepath to ligands.
+    ligand_dir: Filepath to docking ligands.
     protein_dir: Filepath to proteins.
     results_dir: Filepath to docked ligands.
     bin_dir: Binary executables.
+    original_ligands_dir: Path to original ligands of the proteins (used for docking box_calculation)
     system: Operating system. Choose mac (default) or linux.
     """
     # ---- Set up directories ---- #
     if not os.path.exists(results_dir):
         os.mkdir(results_dir)
     current_path = os.path.dirname(os.path.realpath(__file__))
-    original_ligands_dir = os.path.join(current_path, "../../data/original_protein_ligands/")
+    #original_ligands_dir = os.path.join(current_path, "../../data/original_protein_ligands/")
+    original_ligands_dir = original_ligands_dir
     # ---- Check input system (LeDock and Smina are only available for mac and linux) ---- #
     systems = ['mac', 'linux']
     if system not in systems:
         raise ValueError("Invalid OS. Expected one of: %s" % systems)
 
     # ---- calculate docking boxes ---- #
-    protein_names = sorted([i.split('.')[0] for i in os.listdir(protein_dir) if i.endswith(".pdb")])[0:2]  # unique names
-    original_ligand_names = sorted([i for i in os.listdir(original_ligands_dir) if i.endswith(".mol2")])
+    protein_names = sorted([i.split('.')[0] for i in os.listdir(protein_dir) if i.endswith(".pdb")])[2:4]  # unique
+    original_ligand_names = sorted([i for i in os.listdir(original_ligands_dir) if i.endswith(".mol2")])[2:4]
     dock_boxes = []
-    for protein, ligand in tqdm(zip(protein_names, original_ligand_names), desc="...calculating docking boxes...          ",
+    for protein, ligand in tqdm(zip(protein_names, original_ligand_names),
+                                desc="...calculating docking boxes...          ",
                                 total=len(protein_names)):
         ligand = original_ligands_dir + ligand
         dock_boxes.append(get_box(ligand=ligand, software='both'))  # index 0: vina format; index 1: LeDock format
@@ -441,14 +448,14 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
         # run Smina
         print("Protein: ", protein, " (%d/%d)" % (i + 1, len(protein_names)))
         smina_times.append(smina_HTS_docking(ligand_dir, protein_dir, protein, dock_coords, results_dir,
-                                         bin_dir, system=system))
+                                             bin_dir, system=system))
         print("------------------------------------------------------\n")
         # Extend lists for time comparison
         smina_proteins.append(protein)
 
     # save measured time as .tsv:
-    vina_times_df = pd.DataFrame({'dock_time': smina_times, 'protein': smina_proteins})
-    vina_times_df.to_csv(os.path.join(results_dir, "smina_output", "smina_docking_times.tsv"), sep="\t", index=False)
+    smina_times_df = pd.DataFrame({'dock_time': smina_times, 'protein': smina_proteins})
+    smina_times_df.to_csv(os.path.join(results_dir, "smina_output", "smina_docking_times.tsv"), sep="\t", index=False)
 
     # ---- docking using LeDock ---- #
     print("...docking %d protein(s) with LeDock..." % len(protein_names))
@@ -469,14 +476,27 @@ def dock_ligands(ligand_dir: str, protein_dir: str, results_dir: str, bin_dir: s
 
     # save measured time as .tsv:
     ledock_times_df = pd.DataFrame({'dock_time': ledock_times, 'protein': ledock_proteins})
-    ledock_times_df.to_csv(os.path.join(results_dir, "ledock_output", "ledock_docking_times.tsv"), sep="\t", index=False)
+    ledock_times_df.to_csv(os.path.join(results_dir, "ledock_output", "ledock_docking_times.tsv"), sep="\t",
+                           index=False)
 
 
 # ==================================================================================================================== #
-def run(ligand_dir, protein_dir, results_dir, bin_dir, system='mac'):
+def run(ligand_dir, protein_dir, results_dir, bin_dir, original_ligands_dir, system='mac'):
+    """
+    Parameters
+    ----------
+    ligand_dir: Filepath to docking ligands.
+    protein_dir: Filepath to proteins.
+    results_dir: Filepath to docked ligands.
+    bin_dir: Binary executables.
+    original_ligands_dir: Path to original ligands of the proteins (used for docking box_calculation)
+    system: Operating system. Choose mac (default) or linux.
+    """
     # ---- Check input system (LeDock and Smina are only available for mac and linux) ---- #
     systems = ['mac', 'linux']
     if system not in systems:
         raise ValueError("Invalid OS. Expected one of: %s" % systems)
     # ---- Run docking ---- #
-    dock_ligands(ligand_dir=ligand_dir, protein_dir=protein_dir, results_dir=results_dir, bin_dir=bin_dir, system=system)
+    dock_ligands(ligand_dir=ligand_dir, protein_dir=protein_dir, results_dir=results_dir, bin_dir=bin_dir,
+                 original_ligands_dir=original_ligands_dir,
+                 system=system)

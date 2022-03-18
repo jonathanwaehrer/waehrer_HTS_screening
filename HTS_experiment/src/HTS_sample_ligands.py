@@ -21,10 +21,14 @@ def get_mol2_sample(initial_dir, sample_size, seed, target_dir):
     Parameters
     ----------
     initial_dir: Path to the original ligand library.
-    sample_size: Integer specifying sample size (duh).
+    sample_size: Integer specifying sample size.
     seed: (int) Random seed.
     target_dir: Directory to copy the sample in.
     """
+    # ---- set up directory ---- #
+    if not os.path.exists(target_dir):
+        os.mkdir(target_dir)
+
     # ---- Remove existing files in target directory (to avoid potential problems in the future) ----#
     print("...cleaning sample target directory...")
     if len(glob(target_dir+"*")) != 0:
@@ -32,6 +36,7 @@ def get_mol2_sample(initial_dir, sample_size, seed, target_dir):
 
     # ---- Get file paths of all ligands and copy sample ----
     full_ligand_library = glob(initial_dir + "*.mol2")
+    print(initial_dir)
     print("...sampling %d out of %d ligands (random seed: %d)..." % (sample_size, len(full_ligand_library), seed))
     random.seed(seed)
     ligand_sample = random.sample(full_ligand_library, sample_size)
