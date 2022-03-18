@@ -84,7 +84,7 @@ def get_scores(results_dir, ligand_dir):
 
     Parameters
     ----------
-    results_dir: Directory containing docking results.
+    results_dir: Directory containing docking results (out/docking_results/).
     ligand_dir: Directory containing .mol2 files of the prepared ligands (for atom count)
     """
     # ---- Get ligand atom counts and names ---- #
@@ -106,7 +106,7 @@ def get_scores(results_dir, ligand_dir):
     vina_scores_df['ligand_efficiency'] = vina_scores_df['score'] / vina_scores_df['no_atoms']
     # Save as .tsv
     vina_data_file = os.path.join(results_dir, "vina_output", "vina_HTS_results.tsv")
-    vina_scores_df.to_csv(vina_data_file, index=False)
+    vina_scores_df.to_csv(vina_data_file, index=False, sep='\t')
 
     # ---- Get smina scores from multi .sd-files ---- #
     smina_results = sorted(glob(results_dir + "smina_output/*/*.sdf"))
@@ -123,7 +123,7 @@ def get_scores(results_dir, ligand_dir):
     smina_scores_df['ligand_efficiency'] = smina_scores_df['score'] / smina_scores_df['no_atoms']
     # Save as .tsv
     smina_data_file = os.path.join(results_dir, "smina_output", "smina_HTS_results.tsv")
-    smina_scores_df.to_csv(smina_data_file, index=False)
+    smina_scores_df.to_csv(smina_data_file, index=False, sep='\t')
 
     # ---- Get LeDock scores from single .sd-files (similar to vina)---- #
     ledock_results = sorted(glob(results_dir + "ledock_output/*/*.sdf"))
@@ -141,9 +141,68 @@ def get_scores(results_dir, ligand_dir):
     ledock_scores_df['ligand_efficiency'] = ledock_scores_df['score'] / ledock_scores_df['no_atoms']
     # Save as .tsv
     ledock_data_file = os.path.join(results_dir, "ledock_output", "ledock_HTS_results.tsv")
-    ledock_scores_df.to_csv(ledock_data_file, index=False)
+    ledock_scores_df.to_csv(ledock_data_file, index=False, sep='\t')
+
+
+def top_ligands_per_protein(hts_results: str, amount=50, separator='\t'):
+    """
+    Extracts the top N (default: 50) ligands (based on the lowest score) from a single hts_results.tsv file.
+
+    Parameters
+    ----------
+    hts_results: Path to data containing hts_results.
+    amount: Integer specifying the amount of top ligands to be extracted. Per default, the top 50 ligands are retrieved.
+    separator: Separator for file read-in (default is tab separated).
+
+    Returns
+    ----------
+    pd.DataFrame containing the specified amount of top ligands per protein.
+    """
+    # ---- Read data and sort scores protein-wise ---- #
+    hts_results = pd.read_csv(hts_results, sep=separator)
+    hts_results = hts_results.sort_values(by=['score', 'docked_protein'])
+    # ---- Get top N ligands with lowest score per protein ---- #
+    top_ligands = []
+    for protein in hts_results['docked_protein'].unique():
+        top_ligands.append(hts_results[hts_results['docked_protein'] == protein].iloc[0:amount])
+
+    # return the best ligands per protein as single long data frame
+    return pd.concat(top_ligands)
+
+
+def top_ligands_per_tool(results_dir, top_amount=50):
+    """
+    Extracts the N (default = 50) most affine ligands per protein for each tool that is used.
+
+    Parameters
+    ----------
+    results_dir: Directory containing docking results (out/docking_results/).
+    top_amount: Amount of ligands retrieved per protein for each tool.
+
+    Returns
+    ----------
+    pd.DataFrame containing the specified amount of top ligands per protein for all tools.
+    pd.DataFrame containing only the OVERLAPPING ligands per protein in the top 50 for all tools.
+    """
+    # ---- Make directory for plot data ---- #
+    data_output = os.path.join(results_dir, "HTS_plots")
+    if not os.path.exists(data_output):
+        os.mkdir(data_output)
+
+    results_data_files = glob(results_dir + "/*/*HTS_results.tsv")
+    top_N_per_tool = []  # top N ligands for each tool per protein
+    for tool_results in tqdm(results_data_files, desc="...extracting top 50 ligands per protein...    "):
+        top_N_per_tool.append(top_ligands_per_protein(tool_results, amount=top_amount))
+    # Save to .tsv
+    top_ligands_frame = pd.concat(top_N_per_tool)
+    top_ligands_frame.to_csv(os.path.join(data_output, "top_50_ligands.tsv"), sep='\t', index=False)
+
+    # Only overlapping ligands (in all 3 tools) to .tsv
+    top_ligands_frame = top_ligands_frame[top_ligands_frame.duplicated(subset=['name', 'docked_protein'], keep=False)]
+    top_ligands_frame.to_csv(os.path.join(data_output, "top_50_ligands_overlap.tsv"), sep='\t', index=False)
 
 
 # ==================================================================================================================== #
 def run(results_dir, ligand_dir):
     get_scores(results_dir, ligand_dir)
+    top_ligands_per_tool(results_dir=results_dir)
