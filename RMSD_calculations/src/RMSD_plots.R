@@ -9,7 +9,8 @@ either adjust the path or change the directory accordingly.
 install.packages("ggplot2")
 library(ggplot2)
 
-filepath = '../out/RMSD/RMSD_experiment_results.tsv'
+# ---- Read RMSD file ---- #
+filepath = paste0(dirname(rstudioapi::getSourceEditorContext()$path), '/../out/RMSD/RMSD_experiment_results.tsv')
 df = read.csv(filepath, sep = '\t', stringsAsFactors = TRUE)
 
 # ---- Boxplots of RMSD per protein ---- #

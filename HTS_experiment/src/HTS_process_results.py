@@ -102,7 +102,7 @@ def get_scores(results_dir, ligand_dir):
     multiplication_factor = int(len(vina_results)/len(names))  # ratio: #docked ligands versus ligand library size
     vina_scores_df = pd.DataFrame(
         {'name': names * multiplication_factor, 'docked_protein': protein_names, 'score': scores,
-         'no_atoms': counts * multiplication_factor})
+         'no_atoms': counts * multiplication_factor, 'Tool': 'Vina'})
     vina_scores_df['ligand_efficiency'] = vina_scores_df['score'] / vina_scores_df['no_atoms']
     # Save as .tsv
     vina_data_file = os.path.join(results_dir, "vina_output", "vina_HTS_results.tsv")
@@ -119,7 +119,7 @@ def get_scores(results_dir, ligand_dir):
     # Create dataframe of scores and calculate ligand efficiency 
     smina_scores_df = pd.DataFrame(
         {'name': names * len(smina_results), 'docked_protein': protein_names, 'score': scores,
-         'no_atoms': counts * len(smina_results)})
+         'no_atoms': counts * len(smina_results), 'Tool': 'Smina'})
     smina_scores_df['ligand_efficiency'] = smina_scores_df['score'] / smina_scores_df['no_atoms']
     # Save as .tsv
     smina_data_file = os.path.join(results_dir, "smina_output", "smina_HTS_results.tsv")
@@ -129,7 +129,7 @@ def get_scores(results_dir, ligand_dir):
     ledock_results = sorted(glob(results_dir + "ledock_output/*/*.sdf"))
     scores = []
     protein_names = []
-    for ledock_sdf in tqdm(ledock_results, desc="...parsing LeDock output (single .sd-files)...   "):
+    for ledock_sdf in tqdm(ledock_results, desc="...parsing LeDock output (single .sd-files)... "):
         scores.extend(get_scores_from_sdf(input_sdf=ledock_sdf, score_entry_string=">  <Score>"))
         protein_names.append(ledock_sdf.split('/')[-2])
 
@@ -137,7 +137,7 @@ def get_scores(results_dir, ligand_dir):
     multiplication_factor = int(len(vina_results) / len(names))  # ratio: #docked ligands versus ligand library size
     ledock_scores_df = pd.DataFrame(
         {'name': names * multiplication_factor, 'docked_protein': protein_names, 'score': scores,
-         'no_atoms': counts * multiplication_factor})
+         'no_atoms': counts * multiplication_factor, 'Tool': 'LeDock'})
     ledock_scores_df['ligand_efficiency'] = ledock_scores_df['score'] / ledock_scores_df['no_atoms']
     # Save as .tsv
     ledock_data_file = os.path.join(results_dir, "ledock_output", "ledock_HTS_results.tsv")
