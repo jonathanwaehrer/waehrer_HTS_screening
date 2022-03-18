@@ -1,8 +1,6 @@
 "
 Purpose of this script is to plot the results of the RMSD experiment using ggplot2. This script is for plotting only and
 will not be automatically called by the main function of the RMSD experiment (prediction_RMSD.py).
-This script assumes that you run it from the same directory where it is located in. If the filepath can not be found,
-either adjust the path or change the directory accordingly.
 "
 
 # ---- Packages, imports ---- #
@@ -22,7 +20,7 @@ p1 = ggplot(data=df, aes(y=RMSD, x=Tool, fill=Tool)) +
 ggsave('../out/RMSD/1_RMSD_boxplots_per_protein.pdf', plot = p1, width = 9, height = 7)
 
 # ---- Boxplots of best scoring position per docking tool ---- #
-# keep only first entry of each protein-tool kombination
+# keep only first entry of each protein-tool combination
 df$merged = paste(df$Protein, df$Tool)
 df2 = df[!duplicated(df$merged),]
 
