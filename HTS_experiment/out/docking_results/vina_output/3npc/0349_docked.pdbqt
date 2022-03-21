@@ -1,0 +1,59 @@
+MODEL 1
+REMARK VINA RESULT:    -8.529      0.000      0.000
+REMARK INTER + INTRA:         -11.910
+REMARK INTER:                 -11.022
+REMARK INTRA:                  -0.888
+REMARK UNBOUND:                -0.888
+REMARK  5 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: C_5  and  C_8 
+REMARK    2  A    between atoms: N_9  and  C_24 
+REMARK    3  A    between atoms: C_15  and  C_17 
+REMARK    4  A    between atoms: C_24  and  C_25 
+REMARK    5  A    between atoms: C_25  and  N_26 
+ROOT
+ATOM      1  C   UNK d   1      53.154  86.923  19.794  0.00  0.00     0.161 C 
+ATOM      2  N   UNK d   1      53.246  85.638  19.247  0.00  0.00    -0.331 N 
+ATOM      3  C   UNK d   1      53.272  84.760  20.435  0.00  0.00     0.295 C 
+ATOM      4  O   UNK d   1      52.835  83.579  20.518  0.00  0.00    -0.264 OA
+ATOM      5  C   UNK d   1      53.916  85.571  21.473  0.00  0.00     0.250 C 
+ATOM      6  O   UNK d   1      54.178  85.249  22.672  0.00  0.00    -0.282 OA
+ATOM      7  C   UNK d   1      54.216  86.868  20.836  0.00  0.00     0.062 C 
+ATOM      8  C   UNK d   1      55.201  87.691  21.115  0.00  0.00     0.130 C 
+ATOM      9  O   UNK d   1      55.385  88.848  20.367  0.00  0.00    -0.190 OA
+ENDROOT
+BRANCH   2  10
+ATOM     10  C   UNK d   1      53.279  85.012  17.933  0.00  0.00     0.155 C 
+BRANCH  10  11
+ATOM     11  C   UNK d   1      54.370  83.986  17.770  0.00  0.00     0.255 C 
+BRANCH  11  12
+ATOM     12  N   UNK d   1      54.112  83.027  16.747  0.00  0.00    -0.066 N 
+ATOM     13  C   UNK d   1      54.020  83.683  15.456  0.00  0.00     0.261 C 
+ATOM     14  C   UNK d   1      53.791  82.635  14.399  0.00  0.00     0.195 C 
+ATOM     15  O   UNK d   1      52.492  82.144  14.606  0.00  0.00    -0.388 OA
+ATOM     16  C   UNK d   1      52.471  81.516  15.829  0.00  0.00     0.195 C 
+ATOM     17  C   UNK d   1      52.773  82.448  16.974  0.00  0.00     0.261 C 
+ATOM     18  H   UNK d   1      54.798  82.258  16.725  0.00  0.00     0.280 HD
+ENDBRANCH  11  12
+ENDBRANCH  10  11
+ENDBRANCH   2  10
+BRANCH   1  19
+ATOM     19  C   UNK d   1      52.902  88.142  19.127  0.00  0.00    -0.030 A 
+ATOM     20  C   UNK d   1      52.049  89.059  19.761  0.00  0.00     0.011 A 
+ATOM     21  C   UNK d   1      51.729  90.264  19.203  0.00  0.00     0.019 A 
+ATOM     22  C   UNK d   1      52.238  90.630  17.977  0.00  0.00     0.011 A 
+ATOM     23 Br   UNK d   1      51.808  92.313  17.169  0.00  0.00    -0.051 Br
+ATOM     24  C   UNK d   1      53.074  89.736  17.352  0.00  0.00     0.019 A 
+ATOM     25  C   UNK d   1      53.398  88.506  17.926  0.00  0.00     0.011 A 
+ENDBRANCH   1  19
+BRANCH   8  26
+ATOM     26  C   UNK d   1      56.140  87.466  22.203  0.00  0.00     0.001 A 
+ATOM     27  C   UNK d   1      57.182  86.593  22.194  0.00  0.00     0.015 A 
+ATOM     28  C   UNK d   1      58.035  86.506  23.286  0.00  0.00     0.007 A 
+ATOM     29  C   UNK d   1      57.837  87.302  24.391  0.00  0.00    -0.062 A 
+ATOM     30  C   UNK d   1      56.794  88.197  24.439  0.00  0.00     0.007 A 
+ATOM     31  C   UNK d   1      58.733  87.237  25.584  0.00  0.00     0.048 C 
+ATOM     32  C   UNK d   1      55.955  88.266  23.336  0.00  0.00     0.015 A 
+ENDBRANCH   8  26
+TORSDOF 5
+ENDMDL
