@@ -175,30 +175,34 @@ def top_ligands_per_protein(hts_results: str, scoring_criteria='score', amount=5
     return pd.concat(top_ligands), pd.concat(ranked_ligands)
 
 
-def rank_consensus(dataframe, amount=50):
+def rank_consensus(dataframe, amount=50, keyword='Progress'):
     """
     Takes input dataframe with rank-sorted index per protein and calculates the mean rank of each ligand (protein-wise)
-    and the corresponding variance over all tools that were used.
+    and the corresponding standard deviation over all tools that were used.
 
     Parameters
     ----------
     dataframe: pd.Dataframe containing ranks as index.
+    amount: Amount of top ligands to return per protein.
+    keyword: String for progress bar.
 
     Returns
     ----------
     A full pd.DataFrame containing mean rank and variance for each ligand as well as the top 50 ligands per protein
-    based on the lowest sum of franks
+    based on the lowest mean of ranks
     """
     # ---- Index (column 'Unnamed: 0') corresponds to rank ----
-    dataframe['Index'] = dataframe.index
+    dataframe['Index'] = dataframe.index + 1  # in order to have ranks from e.g. 1 to 500 instead of 0 to 499
     mean_rank = dataframe.groupby(by=['name', 'docked_protein'], as_index=False)['Index'].mean()
     mean_rank['SD'] = dataframe.groupby(by=['name', 'docked_protein'], as_index=False)['Index'].std()['Index']
     mean_rank.rename(columns={'Index': 'Mean rank'}, inplace=True)
+    mean_rank.sort_values(by=['docked_protein','Mean rank', 'SD'], inplace=True)
+    #mean_rank.sort_values(by=['Mean rank', 'docked_protein'], inplace=True)
 
-    # ---- Get top 50 based on sum of ranks ---- #
+    # ---- Get top N based on sum of ranks ---- #
     top_ligands = []
-    for protein in mean_rank['docked_protein'].unique():
-        top_ligands.append(mean_rank[mean_rank['docked_protein'] == protein].iloc[0:amount])
+    for protein in tqdm(mean_rank['docked_protein'].unique(), desc=keyword):
+        top_ligands.append(mean_rank[mean_rank['docked_protein'] == protein].sort_values(by='Mean rank').iloc[0:amount])
     return mean_rank, pd.concat(top_ligands)
 
 
@@ -214,52 +218,54 @@ def top_ligands_per_tool(results_dir, top_amount=50):
     Returns
     ----------
     pd.DataFrame containing the specified amount of top ligands per protein for all tools.
-    pd.DataFrame containing only the OVERLAPPING ligands per protein in the top 50 for all tools.
+    pd.DataFrame containing only the OVERLAPPING ligands per protein in the top N for all tools.
     """
     # ---- Make directory for plot data ---- #
     data_output = os.path.join(results_dir, "HTS_plots")
     if not os.path.exists(data_output):
         os.mkdir(data_output)
 
-    # ---- Get top 50 based on score ---- #
+    # ---- Get top N based on score ---- #
     results_data_files = glob(results_dir + "/*/*HTS_results.tsv")
     top_N_per_tool_score = []  # top N ligands for each tool per protein
-    for tool_results in tqdm(results_data_files, desc="...extracting top 50 ligands per protein (based on score)...            "):
+    for tool_results in tqdm(results_data_files, desc="...extracting top %d ligands per protein (based on score)...            " % top_amount):
         top_N_per_tool_score.append(top_ligands_per_protein(hts_results=tool_results, amount=top_amount))
-    # Save top 50 .tsv
+    # Save top N .tsv
     top_ligands_frame = pd.concat([dataframe[0] for dataframe in top_N_per_tool_score])
-    top_ligands_frame.to_csv(os.path.join(data_output, "top_50_ligands.tsv"), sep='\t', index=False)
+    top_ligands_frame.to_csv(os.path.join(data_output, "top_%d_ligands.tsv" % top_amount), sep='\t', index=False)
 
-    # Only overlapping ligands (occur in top 50 for at least 2 tools) to .tsv
+    # Only overlapping ligands (occur in top N for at least 2 tools) to .tsv
     top_ligands_frame = top_ligands_frame[top_ligands_frame.duplicated(subset=['name', 'docked_protein'], keep=False)]
-    top_ligands_frame.to_csv(os.path.join(data_output, "top_50_ligands_overlap.tsv"), sep='\t', index=False)
+    top_ligands_frame.to_csv(os.path.join(data_output, "top_%d_ligands_overlap.tsv" % top_amount), sep='\t', index=False)
 
-    # ---- Get top 50 based on ligand efficiency ---- #
+    # ---- Get top N based on ligand efficiency ---- #
     top_N_per_tool_LE = []  # top N ligands for each tool per protein
-    for tool_results in tqdm(results_data_files, desc="...extracting top 50 ligands per protein (based on ligand efficiency)..."):
+    for tool_results in tqdm(results_data_files, desc="...extracting top %d ligands per protein (based on ligand efficiency)..." % top_amount):
         top_N_per_tool_LE.append(top_ligands_per_protein(hts_results=tool_results, scoring_criteria='ligand_efficiency', amount=top_amount))
     # Save to .tsv
     top_ligands_frame = pd.concat([dataframe[0] for dataframe in top_N_per_tool_LE])
-    top_ligands_frame.to_csv(os.path.join(data_output, "top_50_ligands_ligand_efficiency.tsv"), sep='\t', index=False)
+    top_ligands_frame.to_csv(os.path.join(data_output, "top_%d_ligands_ligand_efficiency.tsv" % top_amount), sep='\t', index=False)
 
-    # Only overlapping ligands (occur in top 50 for at least 2 tools) to .tsv
+    # Only overlapping ligands (occur in top N for at least 2 tools) to .tsv
     top_ligands_frame = top_ligands_frame[top_ligands_frame.duplicated(subset=['name', 'docked_protein'], keep=False)]
-    top_ligands_frame.to_csv(os.path.join(data_output, "top_50_ligands_overlap_ligand_efficiency.tsv"), sep='\t', index=False)
+    top_ligands_frame.to_csv(os.path.join(data_output, "top_%d_ligands_overlap_ligand_efficiency.tsv" % top_amount), sep='\t', index=False)
 
-    # ---- Sum of ranks per ligand to .csv ---- #
-    print("sum of ranks")
+    # ---- Mean of ranks per ligand to .csv ---- #
     # based on score
-    score_ranks, score_ranks_top_50 = rank_consensus(pd.concat([dataframe[1] for dataframe in top_N_per_tool_score]))
+    score_ranks, score_ranks_top_N = rank_consensus(pd.concat([dataframe[1] for dataframe in top_N_per_tool_score]), amount=top_amount,
+                                                     keyword="...extracting mean ligand ranks based on affinity score...              ")
+
     score_ranks.to_csv(os.path.join(data_output, "ligand_ranks_score.tsv"), sep='\t', index=False)
-    score_ranks_top_50.to_csv(os.path.join(data_output, "ligand_ranks_score_top_50.tsv"), sep='\t', index=False)
+    score_ranks_top_N.to_csv(os.path.join(data_output, "ligand_ranks_score_top_%d.tsv" % top_amount), sep='\t', index=False)
 
     # based on ligand efficiency
-    ligand_efficiency_ranks, ligand_efficiency_ranks_top_50 = rank_consensus(pd.concat([dataframe[1] for dataframe in top_N_per_tool_LE]))
+    ligand_efficiency_ranks, ligand_efficiency_ranks_top_N = rank_consensus(pd.concat([dataframe[1] for dataframe in top_N_per_tool_LE]), amount=top_amount,
+                                                                             keyword="...extracting mean ligand ranks based on ligand efficiency...           ")
     ligand_efficiency_ranks.to_csv(os.path.join(data_output, "ligand_ranks_ligand_efficiency.tsv"), sep='\t', index=False)
-    ligand_efficiency_ranks_top_50.to_csv(os.path.join(data_output, "ligand_ranks_ligand_efficiency_top_50.tsv"), sep='\t', index=False)
+    ligand_efficiency_ranks_top_N.to_csv(os.path.join(data_output, "ligand_ranks_ligand_efficiency_top_%d.tsv" % top_amount), sep='\t', index=False)
 
 
 # ==================================================================================================================== #
-def run(results_dir, ligand_dir):
+def run(results_dir, ligand_dir, top_amount):
     get_scores(results_dir, ligand_dir)
-    top_ligands_per_tool(results_dir=results_dir)
+    top_ligands_per_tool(results_dir=results_dir, top_amount=top_amount)

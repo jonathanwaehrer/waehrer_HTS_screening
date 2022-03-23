@@ -31,6 +31,7 @@ def main():
                                help="Affects choice of binary executables. Choose between mac (default) or linux.")
     optional_args.add_argument("--sample", help="Integer specifying sample size.", type=int, default=500)
     optional_args.add_argument("--seed", help="Seed for sampling during preprocessing (=42).", type=int, default=42)
+    optional_args.add_argument("--top_amount", help="Amount of top N ligands to return.", type=int, default=50)
     args = parser.parse_args()
 
     # ---- Assign variables from arguments ---- #
@@ -69,7 +70,7 @@ def main():
     print("# ------------ Performing HTS using Vina, Smina and LeDock ------------ #")
     docking.run(ligand_dir=prepared_ligand_dir, protein_dir=prepared_protein_dir, original_ligands_dir=original_ligand_path, results_dir=docking_results_dir, bin_dir=bin_path, system=system)
     print("# ------------------- Parsing HTS docking results --------------------- #")
-    postprocessing.run(results_dir=docking_results_dir, ligand_dir=prepared_ligand_dir)
+    postprocessing.run(results_dir=docking_results_dir, ligand_dir=prepared_ligand_dir, top_amount=args.top_amount)
 
 
 if __name__ == "__main__":
