@@ -5,7 +5,9 @@ will not be automatically called by the main function of the HTS experiment (vir
 
 # ---- Packages, imports ---- #
 #install.packages("ggplot2")
+#install.packages("pheatmap")
 library(ggplot2)
+library(pheatmap)
 
 # ---- Read scores ---- #
 script_path = dirname(rstudioapi::getSourceEditorContext()$path)       # path of THIS script
@@ -23,7 +25,7 @@ p1 = ggplot(full_top_50, aes(x=name, y=score, color=Tool)) +
   # theme, labels
   labs(x = "Ligand", y= "Score [kcal/mol]", title = "Top 50 ligands per protein")
 
-ggsave(paste0(data_path, "1_top_50_ligands.pdf"), plot = p1, width = 11, height = 7)
+ggsave(paste0(data_path, "1_top_50_ligands.pdf"), plot = p1, width = 11, height = 9)
 
 # ---- Lines: Scores over overlapping top 50 ligands in all tools ---- #
 overlap_top_50 = read.csv(paste0(data_path, "top_50_ligands_overlap.tsv"), sep = '\t')
@@ -36,7 +38,7 @@ p2 = ggplot(overlap_top_50, aes(x=as.factor(name), y=score, color=Tool, group=To
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
   labs(x = "Ligand", y= "Score [kcal/mol]", title = "Overlapping ligands between tools in top 50")
 
-ggsave(paste0(data_path, "2_top_50_ligands_overlap.pdf"), plot = p2, width = 11, height = 7)
+ggsave(paste0(data_path, "2_top_50_ligands_overlap.pdf"), plot = p2, width = 11, height = 9)
 
 
 # ===== TOP 50 PLOTS BASED ON LIGAND EFFICIENCY ===== #
@@ -50,7 +52,7 @@ p3 = ggplot(full_top_50_LE, aes(x=name, y=ligand_efficiency, color=Tool)) +
   # theme, labels
   labs(x = "Ligand", y= "Ligand Efficiency", title = "Top 50 ligands per protein (LE)")
 
-ggsave(paste0(data_path, "3_top_50_ligands_ligand_efficiency.pdf"), plot = p3, width = 11, height = 7)
+ggsave(paste0(data_path, "3_top_50_ligands_ligand_efficiency.pdf"), plot = p3, width = 11, height = 9)
 
 # ---- Lines: Scores over overlapping top 50 ligands in all tools ---- #
 overlap_top_50_LE = read.csv(paste0(data_path, "top_50_ligands_overlap_ligand_efficiency.tsv"), sep = '\t')
@@ -63,4 +65,18 @@ p4 = ggplot(overlap_top_50_LE, aes(x=as.factor(name), y=ligand_efficiency, color
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
   labs(x = "Ligand", y= "Ligand Efficiency", title = "Overlapping ligands between tools in top 50 (LE)")
 
-ggsave(paste0(data_path, "4_top_50_ligands_overlap_ligand_efficiency.pdf"), plot = p4, width = 11, height = 7)
+ggsave(paste0(data_path, "4_top_50_ligands_overlap_ligand_efficiency.pdf"), plot = p4, width = 11, height = 9)
+
+
+# ===== HEATMAP OF OVERLAP ===== #
+# ---- Based on score ---- #
+score_heat = read.table(paste0(data_path, "top_50_score_ligands_overlap_heatmap.tsv"), sep = '\t', header = TRUE, row.names = 1)
+colnames(score_heat) = row.names(score_heat)
+pheatmap(score_heat)
+
+# ---- Based on ligand efficiency ---- #
+le_heat = read.table(paste0(data_path, "top_50_ligand_efficiency_ligands_overlap_heatmap.tsv"), sep = '\t', header = TRUE, row.names = 1)
+colnames(le_heat) = row.names(le_heat)
+pheatmap(le_heat)
+
+

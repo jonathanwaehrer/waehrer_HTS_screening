@@ -240,8 +240,13 @@ def overlap_heatmap_data(mean_rank_data, scored_data):
 
     for i in range(len(wide_data.columns)):
         for j in range(len(wide_data.columns)):
-            overlap = len(list(set(wide_data.iloc[:, i]) & set(wide_data.iloc[:, j]))) / normalization_factor
-            heatmap[i, j] = overlap
+            overlap = len(set(wide_data.iloc[:, i]).intersection(set(wide_data.iloc[:, j]))) / normalization_factor
+            if i == 10000:
+                print(wide_data.iloc[:, i].name, i)
+                print(wide_data.iloc[:, j].name, j)
+                print(overlap)
+                print("------------\n")
+            heatmap[j, i] = overlap
 
     heatmap = pd.DataFrame(heatmap, columns=wide_data.columns, index=wide_data.columns)
     return heatmap
@@ -277,8 +282,8 @@ def top_ligands_per_tool(results_dir, top_amount=50):
     top_ligands_frame.to_csv(os.path.join(data_output, "top_%d_ligands.tsv" % top_amount), sep='\t', index=False)
 
     # Only overlapping ligands (occur in top N for at least 2 tools) to .tsv
-    top_ligands_frame = top_ligands_frame[top_ligands_frame.duplicated(subset=['name', 'docked_protein'], keep=False)]
-    top_ligands_frame.to_csv(os.path.join(data_output, "top_%d_ligands_overlap.tsv" % top_amount), sep='\t',
+    top_ligands_frame_ov = top_ligands_frame[top_ligands_frame.duplicated(subset=['name', 'docked_protein'], keep=False)]
+    top_ligands_frame_ov.to_csv(os.path.join(data_output, "top_%d_ligands_overlap.tsv" % top_amount), sep='\t',
                              index=False)
 
     # ---- Get top N based on ligand efficiency ---- #
@@ -293,9 +298,9 @@ def top_ligands_per_tool(results_dir, top_amount=50):
                                 sep='\t', index=False)
 
     # Only overlapping ligands (occur in top N for at least 2 tools) to .tsv
-    top_ligands_frame_LE = top_ligands_frame_LE[
+    top_ligands_frame_LE_ov = top_ligands_frame_LE[
         top_ligands_frame_LE.duplicated(subset=['name', 'docked_protein'], keep=False)]
-    top_ligands_frame_LE.to_csv(os.path.join(data_output, "top_%d_ligands_overlap_ligand_efficiency.tsv" % top_amount),
+    top_ligands_frame_LE_ov.to_csv(os.path.join(data_output, "top_%d_ligands_overlap_ligand_efficiency.tsv" % top_amount),
                                 sep='\t', index=False)
 
     # ---- Mean of ranks per ligand to .csv ---- #
