@@ -22,12 +22,13 @@ def main():
     required_args.add_argument("--proteins", required=True,
                                help="Path to .pdb files for docking. Ligands (if present) will be removed.")
     required_args.add_argument("--bin", required=True, help="Path to required binary executables.")
-    required_args.add_argument("--initial_ligands", required=True, help="Path to the original ligands' .mol2 files for each protein. The file names must start with the corresponding protein name.")
+    required_args.add_argument("--initial_ligands", required=True,
+                               help="Path to the original ligands' .mol2 files for each protein. The file names must start with the corresponding protein name.")
     optional_args = parser.add_argument_group("Optional parameters")
     optional_args.add_argument("--ligands",
-                        help="Path to ligand .mol2 files for docking. Will lead to sampling and preprocessing. Can be omitted if a prepared library (including .pdbqt files for Vina) already exists under ./out/prepared_ligands. NOTE: Adding this parameter will remove all ligands (.mol2 and .pdbqt) in HTS_experiment/out/prepared_ligands before resampling and start of preprocessing. This can NOT be undone.")
+                               help="Path to ligand .mol2 files for docking. Will lead to sampling and preprocessing. Can be omitted if a prepared library (including .pdbqt files for Vina) already exists under ./out/prepared_ligands. NOTE: Adding this parameter will remove all ligands (.mol2 and .pdbqt) in HTS_experiment/out/prepared_ligands before resampling and start of preprocessing. This can NOT be undone.")
     optional_args.add_argument("--os", default='mac',
-                        help="Affects choice of binary executables. Choose between mac (default) or linux.")
+                               help="Affects choice of binary executables. Choose between mac (default) or linux.")
     optional_args.add_argument("--sample", help="Integer specifying sample size.", type=int, default=500)
     optional_args.add_argument("--seed", help="Seed for sampling during preprocessing (=42).", type=int, default=42)
     args = parser.parse_args()

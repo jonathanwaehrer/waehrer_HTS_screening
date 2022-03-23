@@ -1,0 +1,76 @@
+MODEL 1
+REMARK VINA RESULT:    -8.623      0.000      0.000
+REMARK INTER + INTRA:         -13.410
+REMARK INTER:                 -12.908
+REMARK INTRA:                  -0.502
+REMARK UNBOUND:                -0.502
+REMARK  9 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: C_3  and  O_35 
+REMARK    2  A    between atoms: C_4  and  O_33 
+REMARK    3  A    between atoms: C_6  and  C_8 
+REMARK    4  A    between atoms: N_9  and  C_27 
+REMARK    5  A    between atoms: C_14  and  C_15 
+REMARK    6  A    between atoms: C_15  and  C_17 
+REMARK    7  A    between atoms: C_27  and  C_28 
+REMARK    8  A    between atoms: C_28  and  C_29 
+REMARK    9  A    between atoms: C_29  and  N_30 
+ROOT
+ATOM      1  C   UNK d   1      21.218  79.148  12.150  0.00  0.00     0.161 C 
+ATOM      2  N   UNK d   1      22.660  79.020  12.126  0.00  0.00    -0.332 N 
+ATOM      3  C   UNK d   1      23.140  78.854  10.822  0.00  0.00     0.295 C 
+ATOM      4  O   UNK d   1      24.309  78.594  10.499  0.00  0.00    -0.264 OA
+ATOM      5  C   UNK d   1      22.012  79.039   9.908  0.00  0.00     0.250 C 
+ATOM      6  O   UNK d   1      22.129  78.945   8.659  0.00  0.00    -0.282 OA
+ATOM      7  C   UNK d   1      20.836  79.326  10.701  0.00  0.00     0.062 C 
+ENDROOT
+BRANCH   7   8
+ATOM      8  C   UNK d   1      19.661  79.633  10.223  0.00  0.00     0.130 C 
+ATOM      9  O   UNK d   1      19.007  80.764  10.684  0.00  0.00    -0.190 OA
+BRANCH   8  10
+ATOM     10  C   UNK d   1      19.012  78.832   9.214  0.00  0.00     0.002 A 
+ATOM     11  C   UNK d   1      18.001  79.492   8.503  0.00  0.00     0.024 A 
+ATOM     12  C   UNK d   1      17.321  78.865   7.488  0.00  0.00    -0.021 A 
+ATOM     13  C   UNK d   1      17.626  77.566   7.154  0.00  0.00     0.075 A 
+ATOM     14  C   UNK d   1      16.215  79.382   6.620  0.00  0.00     0.073 C 
+ATOM     15  C   UNK d   1      18.626  76.935   7.870  0.00  0.00     0.038 A 
+ATOM     16  O   UNK d   1      16.783  77.178   6.092  0.00  0.00    -0.345 OA
+ATOM     17  C   UNK d   1      19.320  77.550   8.890  0.00  0.00     0.017 A 
+ATOM     18  C   UNK d   1      15.695  78.094   6.024  0.00  0.00     0.129 C 
+ATOM     19  C   UNK d   1      14.516  77.642   6.865  0.00  0.00     0.040 C 
+ENDBRANCH   8  10
+ENDBRANCH   7   8
+BRANCH   1  20
+ATOM     20  C   UNK d   1      20.674  77.874  12.689  0.00  0.00    -0.026 A 
+ATOM     21  C   UNK d   1      20.832  77.668  14.050  0.00  0.00     0.049 A 
+ATOM     22  C   UNK d   1      20.376  76.553  14.671  0.00  0.00     0.103 A 
+ATOM     23  C   UNK d   1      19.728  75.585  13.914  0.00  0.00     0.116 A 
+ATOM     24  C   UNK d   1      19.570  75.796  12.537  0.00  0.00     0.047 A 
+ATOM     25 Br   UNK d   1      18.684  74.475  11.505  0.00  0.00    -0.048 Br
+ATOM     26  C   UNK d   1      20.038  76.936  11.914  0.00  0.00     0.031 A 
+BRANCH  22  27
+ATOM     27  O   UNK d   1      20.537  76.348  16.044  0.00  0.00    -0.353 OA
+ATOM     28  C   UNK d   1      19.837  77.074  17.017  0.00  0.00     0.210 C 
+ENDBRANCH  22  27
+BRANCH  23  29
+ATOM     29  O   UNK d   1      19.262  74.452  14.530  0.00  0.00    -0.357 OA
+ATOM     30  H   UNK d   1      19.214  74.399  15.518  0.00  0.00     0.218 HD
+ENDBRANCH  23  29
+ENDBRANCH   1  20
+BRANCH   2  31
+ATOM     31  C   UNK d   1      23.440  79.063  13.345  0.00  0.00     0.129 C 
+BRANCH  31  32
+ATOM     32  C   UNK d   1      23.323  80.281  14.160  0.00  0.00     0.048 C 
+BRANCH  32  33
+ATOM     33  C   UNK d   1      23.294  80.134  15.636  0.00  0.00     0.235 C 
+BRANCH  33  34
+ATOM     34  N   UNK d   1      23.982  78.966  16.130  0.00  0.00    -0.079 N 
+ATOM     35  C   UNK d   1      23.238  78.423  17.275  0.00  0.00     0.269 C 
+ATOM     36  C   UNK d   1      25.271  79.407  16.632  0.00  0.00     0.269 C 
+ATOM     37  H   UNK d   1      24.155  78.235  15.434  0.00  0.00     0.278 HD
+ENDBRANCH  33  34
+ENDBRANCH  32  33
+ENDBRANCH  31  32
+ENDBRANCH   2  31
+TORSDOF 9
+ENDMDL
