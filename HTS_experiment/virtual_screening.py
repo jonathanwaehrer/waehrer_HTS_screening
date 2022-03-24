@@ -27,10 +27,10 @@ def main():
     optional_args = parser.add_argument_group("Optional parameters")
     optional_args.add_argument("--ligands",
                                help="Path to ligand .mol2 files for docking. Will lead to sampling and preprocessing. Can be omitted if a prepared library (including .pdbqt files for Vina) already exists under ./out/prepared_ligands. NOTE: Adding this parameter will remove all ligands (.mol2 and .pdbqt) in HTS_experiment/out/prepared_ligands before resampling and start of preprocessing. This can NOT be undone.")
+    optional_args.add_argument("--sample", help="Integer specifying sample size.", type=int, default=500)
     optional_args.add_argument("--os", default='mac',
                                help="Affects choice of binary executables. Choose between mac (default) or linux.")
-    optional_args.add_argument("--sample", help="Integer specifying sample size.", type=int, default=500)
-    optional_args.add_argument("--seed", help="Seed for sampling during preprocessing (=42).", type=int, default=42)
+    optional_args.add_argument("--seed", help="Seed for sampling during preprocessing (default=42).", type=int, default=42)
     optional_args.add_argument("--top_amount", help="Amount of top N ligands to return.", type=int, default=50)
     args = parser.parse_args()
 
@@ -75,12 +75,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-    '''proteins = "/Users/jonathanwahrer/Desktop/Msc/3_Semester/Drug_Design_Praktikum/waehrer_HTS_screening/data/proteins/"
-    bin_path = "/Users/jonathanwahrer/Desktop/Msc/3_Semester/Drug_Design_Praktikum/waehrer_HTS_screening/bin/"
-    system = "mac"
-    lig_library = "/Users/jonathanwahrer/Desktop/Msc/3_Semester/Drug_Design_Praktikum/waehrer_HTS_screening/data/ligands/"
-    sample_size = 3
-    seed = 42
-    pre = False
-    '''
