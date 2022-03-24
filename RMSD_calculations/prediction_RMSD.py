@@ -18,9 +18,10 @@ def main():
     parser = argparse.ArgumentParser(description="Frontiers in applied drug design - Jonathan Waehrer, RMSD experiment")
     parser.add_argument("--proteins", required=True,
                         help="Path to .pdb files for docking. Ligands (if present) will be removed.")
+    parser.add_argument("--initial_ligands", required=True, help="Directory containing initial ligands as .mol2 files.")
     parser.add_argument("--bin", required=True, help="Path to required binary executables.")
     parser.add_argument("--os", default='mac',
-                        help="Affects choice of binary executables. Choose between mac (default) or linux.")
+                        help="(Optional) Affects choice of binary executables. Choose between mac (default) or linux.")
     args = parser.parse_args()
 
     proteins = args.proteins
@@ -45,7 +46,7 @@ def main():
     # ---- Run pipeline ---- #
     print("# ================== RMSD COMPARISON OF DOCKING TOOLS ================= #")
     print("# ---- Receptor- and Ligand-preparation for Vina, Smina and LeDock ---- #")
-    preparation.run(input_proteins=proteins, path_to_bin=bin_path, system=system)
+    preparation.run(input_proteins=proteins, path_to_ligands=args.initial_ligands, path_to_bin=bin_path, system=system)
     print("# ------- Docking original ligands using Vina, Smina and LeDock ------- #")
     docking.run(ligand_dir=prepared_ligand_dir, protein_dir=prepared_protein_dir, results_dir=docking_results_dir,
                 bin_dir=bin_path, system=system)
