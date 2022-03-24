@@ -206,7 +206,7 @@ def rank_consensus(dataframe, amount=50, keyword='Progress'):
     return mean_rank, pd.concat(top_ligands)
 
 
-def overlap_heatmap_data(mean_rank_data, scored_data):
+def overlap_heatmap_data(mean_rank_data, scored_data, keyword="...creating heatmap of overlapping fractions..."):
     """
     Function that calculates the protein-wise fraction of overlap in the top N ligands between all 3 tools and
     their resulting rank-mean-consensus data.
@@ -215,6 +215,7 @@ def overlap_heatmap_data(mean_rank_data, scored_data):
     ----------
     mean_rank_data: Consensus data containing the top N protein-wise mean ranks over all tools based on either score or ligand efficiency.
     scored_data: Data containing the top N ligands per protein based on either based on either score or ligand efficiency.
+    keyword: String for progress bar.
 
     Returns
     ----------
@@ -238,18 +239,44 @@ def overlap_heatmap_data(mean_rank_data, scored_data):
     heatmap = np.zeros((len(wide_data.columns), len(wide_data.columns)))  # quadratic heatmap
     normalization_factor = len(wide_data)  # used to calculate fraction of overlap
 
-    for i in range(len(wide_data.columns)):
+    for i in tqdm(range(len(wide_data.columns)), desc=keyword):
         for j in range(len(wide_data.columns)):
             overlap = len(set(wide_data.iloc[:, i]).intersection(set(wide_data.iloc[:, j]))) / normalization_factor
-            if i == 10000:
-                print(wide_data.iloc[:, i].name, i)
-                print(wide_data.iloc[:, j].name, j)
-                print(overlap)
-                print("------------\n")
             heatmap[j, i] = overlap
 
     heatmap = pd.DataFrame(heatmap, columns=wide_data.columns, index=wide_data.columns)
     return heatmap
+
+
+def process_docking_times(docking_time_filepaths: list):
+    """
+    Appends docking time_files to a single long data frame.
+    Vina was originally timed by ligand and not protein-wise meaning the cumulative sum of ligand-docking-times per
+    protein will be appended to the final data frame.
+
+    Parameters
+    ----------
+    docking_time_filepaths: List containing file paths to *_docking_times.tsv file
+
+    Returns
+    ----------
+    pd.DataFrame of protein-wise docking times per tool.
+    """
+    # ---- Iteratively add tool name to each dataframe as indicator before appending ---- #
+    processed_times = []
+    for filepath in tqdm(docking_time_filepaths, desc="...processing docking_times for %d tools...                              " % len(docking_time_filepaths)):
+        tool_times_df = pd.read_csv(filepath, sep='\t')
+        tool_name = os.path.basename(filepath).split("_")[0]
+
+        # ---- Vina docking times were measured per ligand => cumulative time per protein is required ---- #
+        if tool_name == "vina":
+            tool_times_df = tool_times_df.groupby('protein', as_index=False).sum()
+            tool_times_df.drop('ligand', axis=1, inplace=True)
+
+        tool_times_df['Tool'] = tool_name
+        processed_times.append(tool_times_df)
+
+    return pd.concat(processed_times)
 
 
 def top_ligands_per_tool(results_dir, top_amount=50):
@@ -274,8 +301,7 @@ def top_ligands_per_tool(results_dir, top_amount=50):
     # ---- Get top N based on score ---- #
     results_data_files = glob(results_dir + "/*/*HTS_results.tsv")
     top_N_per_tool_score = []  # top N ligands for each tool per protein
-    for tool_results in tqdm(results_data_files,
-                             desc="...extracting top %d ligands per protein (based on score)...            " % top_amount):
+    for tool_results in tqdm(results_data_files, desc="...extracting top %d ligands per protein (based on score)...            " % top_amount):
         top_N_per_tool_score.append(top_ligands_per_protein(hts_results=tool_results, amount=top_amount))
     # Save top N .tsv
     top_ligands_frame = pd.concat([dataframe[0] for dataframe in top_N_per_tool_score])
@@ -283,54 +309,49 @@ def top_ligands_per_tool(results_dir, top_amount=50):
 
     # Only overlapping ligands (occur in top N for at least 2 tools) to .tsv
     top_ligands_frame_ov = top_ligands_frame[top_ligands_frame.duplicated(subset=['name', 'docked_protein'], keep=False)]
-    top_ligands_frame_ov.to_csv(os.path.join(data_output, "top_%d_ligands_overlap.tsv" % top_amount), sep='\t',
-                             index=False)
+    top_ligands_frame_ov.to_csv(os.path.join(data_output, "top_%d_ligands_overlap.tsv" % top_amount), sep='\t', index=False)
 
     # ---- Get top N based on ligand efficiency ---- #
     top_N_per_tool_LE = []  # top N ligands for each tool per protein
-    for tool_results in tqdm(results_data_files,
-                             desc="...extracting top %d ligands per protein (based on ligand efficiency)..." % top_amount):
-        top_N_per_tool_LE.append(
-            top_ligands_per_protein(hts_results=tool_results, scoring_criteria='ligand_efficiency', amount=top_amount))
+    for tool_results in tqdm(results_data_files, desc="...extracting top %d ligands per protein (based on ligand efficiency)..." % top_amount):
+        top_N_per_tool_LE.append(top_ligands_per_protein(hts_results=tool_results, scoring_criteria='ligand_efficiency', amount=top_amount))
     # Save to .tsv
     top_ligands_frame_LE = pd.concat([dataframe[0] for dataframe in top_N_per_tool_LE])
-    top_ligands_frame_LE.to_csv(os.path.join(data_output, "top_%d_ligands_ligand_efficiency.tsv" % top_amount),
-                                sep='\t', index=False)
+    top_ligands_frame_LE.to_csv(os.path.join(data_output, "top_%d_ligands_ligand_efficiency.tsv" % top_amount), sep='\t', index=False)
 
     # Only overlapping ligands (occur in top N for at least 2 tools) to .tsv
-    top_ligands_frame_LE_ov = top_ligands_frame_LE[
-        top_ligands_frame_LE.duplicated(subset=['name', 'docked_protein'], keep=False)]
-    top_ligands_frame_LE_ov.to_csv(os.path.join(data_output, "top_%d_ligands_overlap_ligand_efficiency.tsv" % top_amount),
-                                sep='\t', index=False)
+    top_ligands_frame_LE_ov = top_ligands_frame_LE[top_ligands_frame_LE.duplicated(subset=['name', 'docked_protein'], keep=False)]
+    top_ligands_frame_LE_ov.to_csv(os.path.join(data_output, "top_%d_ligands_overlap_ligand_efficiency.tsv" % top_amount), sep='\t', index=False)
 
     # ---- Mean of ranks per ligand to .csv ---- #
     # based on score
-    score_ranks, score_ranks_top_N = rank_consensus(pd.concat([dataframe[1] for dataframe in top_N_per_tool_score]),
-                                                    amount=top_amount,
+    score_ranks, score_ranks_top_N = rank_consensus(pd.concat([dataframe[1] for dataframe in top_N_per_tool_score]), amount=top_amount,
                                                     keyword="...extracting mean ligand ranks based on affinity score...              ")
 
     score_ranks.to_csv(os.path.join(data_output, "ligand_ranks_score.tsv"), sep='\t', index=False)
-    score_ranks_top_N.to_csv(os.path.join(data_output, "ligand_ranks_score_top_%d.tsv" % top_amount), sep='\t',
-                             index=False)
+    score_ranks_top_N.to_csv(os.path.join(data_output, "ligand_ranks_score_top_%d.tsv" % top_amount), sep='\t', index=False)
 
     # based on ligand efficiency
-    ligand_efficiency_ranks, ligand_efficiency_ranks_top_N = rank_consensus(
-        pd.concat([dataframe[1] for dataframe in top_N_per_tool_LE]), amount=top_amount,
-        keyword="...extracting mean ligand ranks based on ligand efficiency...           ")
-    ligand_efficiency_ranks.to_csv(os.path.join(data_output, "ligand_ranks_ligand_efficiency.tsv"), sep='\t',
-                                   index=False)
-    ligand_efficiency_ranks_top_N.to_csv(
-        os.path.join(data_output, "ligand_ranks_ligand_efficiency_top_%d.tsv" % top_amount), sep='\t', index=False)
+    ligand_efficiency_ranks, ligand_efficiency_ranks_top_N = rank_consensus(pd.concat([dataframe[1] for dataframe in top_N_per_tool_LE]), amount=top_amount,
+                                                                            keyword="...extracting mean ligand ranks based on ligand efficiency...           ")
+    ligand_efficiency_ranks.to_csv(os.path.join(data_output, "ligand_ranks_ligand_efficiency.tsv"), sep='\t', index=False)
+    ligand_efficiency_ranks_top_N.to_csv(os.path.join(data_output, "ligand_ranks_ligand_efficiency_top_%d.tsv" % top_amount), sep='\t', index=False)
 
     # ---- Heatmap of overlapping ligands ---- #
     # score
-    heatmap_based_on_score = overlap_heatmap_data(mean_rank_data=score_ranks_top_N, scored_data=top_ligands_frame)
-    heatmap_based_on_score.to_csv(os.path.join(data_output, "top_%d_score_ligands_overlap_heatmap.tsv" % top_amount),
-                                  sep='\t', index=True)
+    heatmap_based_on_score = overlap_heatmap_data(mean_rank_data=score_ranks_top_N, scored_data=top_ligands_frame,
+                                                  keyword="...preparing heatmap of overlap fractions in top %d based on score...   " % top_amount)
+    heatmap_based_on_score.to_csv(os.path.join(data_output, "top_%d_score_ligands_overlap_heatmap.tsv" % top_amount), sep='\t', index=True)
+
     # ligand efficiency
-    heatmap_based_on_LE = overlap_heatmap_data(mean_rank_data=ligand_efficiency_ranks_top_N, scored_data=top_ligands_frame_LE)
-    heatmap_based_on_LE.to_csv(os.path.join(data_output, "top_%d_ligand_efficiency_ligands_overlap_heatmap.tsv" % top_amount),
-                               sep='\t', index=True)
+    heatmap_based_on_LE = overlap_heatmap_data(mean_rank_data=ligand_efficiency_ranks_top_N, scored_data=top_ligands_frame_LE,
+                                               keyword="...preparing heatmap of overlap fractions in top %d based on LE...      " % top_amount)
+    heatmap_based_on_LE.to_csv(os.path.join(data_output, "top_%d_ligand_efficiency_ligands_overlap_heatmap.tsv" % top_amount), sep='\t', index=True)
+
+    # ---- Processing docking time ---- #
+    docking_time_files = glob(results_dir + "[!HTS]*/*docking_times.tsv")  # excludes folder 'HTS_plots'
+    docking_times = process_docking_times(docking_time_filepaths=docking_time_files)
+    docking_times.to_csv(os.path.join(data_output, "docking_times.tsv"), sep='\t', index=False)
 
 
 # ==================================================================================================================== #
