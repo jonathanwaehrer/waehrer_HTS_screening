@@ -55,7 +55,7 @@ Example: <tt>/Users/jonathanwahrer/Desktop/waehrer_HTS_screening/data/proteins/<
 <ul>
   <li> <tt>--os</tt> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp; User's operating system. Choose <tt>mac</tt> (default) or <tt>linux</tt>.</li>
   <li> <tt>--ligands</tt> &emsp;&emsp;&emsp;&emsp;&emsp;&nbsp; Directory containing <tt>.mol2</tt>-files. 
-       Parameter can be ommited if both prepared &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp; ligands AND proteins already exist in respective directories <tt>out/prepared_ligands/</tt> and <tt>out/prepared_proteins/</tt>.</li>
+       Parameter can be ommited if both prepared &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp; ligands AND proteins already exist in respective directories <tt>out/prepared_ligands/</tt> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp; and <tt>out/prepared_proteins/</tt>.</li>
   <li> <tt>--sample</tt> &emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp; Integer specifying amount of ligands to be sampled from <tt>--ligands</tt> (default = 500).</li>
   <li> <tt>--seed</tt> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp; Integer specifying seed for random sampling of <tt>--ligands</tt> (default = 42). </li>
   <li> <tt>--top_amount</tt> &emsp;&emsp;&emsp;&ensp;&nbsp; A portion of the returned results' data sets will be based on the top N ligands (50 by default). Can be used to  &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp; adjust the amound e.g. to to receive data about the ligand efficiency for the top 10 ligands.
