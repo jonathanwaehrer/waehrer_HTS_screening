@@ -25,7 +25,7 @@ This script will only dock one ligand per protein and the provided directories c
 </ul>
 
 NOTE: Directories must be provided as full paths!<br>
-Example: <tt>/Users/jonathanwahrer/Desktop/Msc/3_Semester/Drug_Design_Praktikum/waehrer_HTS_screening/data/proteins/</tt>
+Example: <tt>/Users/jonathanwahrer/Desktop/waehrer_HTS_screening/data/proteins/</tt>
 <br>
 
 **Optional Parameters**
