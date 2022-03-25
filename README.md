@@ -1,7 +1,8 @@
 # waehrer_HTS_screening
 ## Setup 
 <ol>
-  <li> Use the provided <tt>conda_environment.yml</tt> to download all dependencies using: <br> <tt> conda env create -f conda_environment.yml</tt>.</li>
+  <li> Use the provided <tt>conda_environment.yml</tt> to download all dependencies.</li> 
+    <ul> <li ><tt> conda env create -f conda_environment.yml</tt>.</li></ul>
   <li> <a href="https://ccsb.scripps.edu/adfr/downloads/"> Download ADFRsuite</a> (last accessed: March 25th, 2022) and install according to instructions.</li>
   <li> Open the scripts <tt>bin/prepare_ligand</tt> and <tt>bin/prepare_receptor</tt> in an editor of your choice:
     <ul> <li> For both scripts, change the variable ADS_ROOT (line 9 in both scripts) to the directory where ADRFsuite was installed. </ul>
